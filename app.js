@@ -1,68 +1,82 @@
-var express      = require('express');
-var path         = require('path');
-var favicon      = require('serve-favicon');
-var logger       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
-var flash        = require('connect-flash')
+const express = require('express');
+const bodyParser= require('body-parser')
+const pg = require('pg')
+const app = express();
+const bcrypt = require('bcrypt')
 
-var app = express();
+var Sequelize = require('sequelize');
+var session = require('express-session');
 
-var index      = require('./routes/index');
-var unknown    = require('./routes/unknown');
+/// Conecting to the blogapplication database
+var sequelize = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
+	host: 'localhost',
+	dialect: 'postgres',
+});
 
-app.set('views', path.join(__dirname, 'views'));
+/// Setting the jade views
+app.set('views', './views');
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: '4564f6s4fdsfdfd', resave: false, saveUninitialized: false }))
-app.use(flash())
-app.use(function(req, res, next) {
-   res.locals.errorMessage = req.flash('error')
-   next()
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.static('./public/'));
+
+/// Declaring the session stuff??
+app.use(session({
+	secret: 'oh wow very secret much security',
+	resave: true,
+	saveUninitialized: false
+}));
+
+/// Declaring the tables
+var mainuser = sequelize.define('mainuser', {
+	firstname: Sequelize.STRING,
+	lastname: Sequelize.STRING,
+	email: Sequelize.STRING,
+	organisation: Sequelize.STRING,
+	username: Sequelize.STRING,
+	password: Sequelize.STRING,
+	telephone: Sequelize.STRING,
+	location: Sequelize.STRING
 });
 
-app.get('/', function(req, res) {
- res.redirect('/index')
+/// This part renders the landing page
+
+app.get('/', (req, res) => {
+	res.render("index")
+});
+
+/// This part renders the register page
+
+app.get('/register', (req, res) => {
+	res.render("register")
 })
 
-app.use('/index', index);
-app.use('/unknow', unknown);
+app.post('/register', (req, res) => {
+	bcrypt.hash(req.body.password, 9, function(err, hash) {
+		if (err) {
+			return err
+		}
+		else {
+			mainuser.create({
+				firstname: req.body.firstname,
+				lastname: req.body.lastname,				
+				organisation: req.body.organisation,
+				email: req.body.email,
+				username: req.body.username,
+				password: hash,
+				telephone: req.body.telephone,
+				location: req.body.location
+			})
+		}
+	})
+	res.redirect('/')
+})
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
- var err = new Error('Not Found');
- err.status = 404;
- next(err);
+
+
+/// This part tells the app to listen to a server
+sequelize.sync({force: false}).then(function () {
+    var server = app.listen(3000, function (){
+            console.log ('Blog Application listening on: ' + server.address().port)
+    });
 });
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
- app.use(function(err, req, res, next) {
-   res.status(err.status || 500);
-   res.render('error', {
-     message: err.message,
-     error: err
-   });
- });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
- res.status(err.status || 500);
- res.render('error', {
-   message: err.message,
-   error: {}
- });
-});
-
-module.exports = app;
