@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/PaulvanMotman/Guesty/issues"
   },
-  "homepage": "https://github.com/PaulvanMotman/Guesty#readme"
+  "homepage": "https://github.com/PaulvanMotman/Guesty#readme",
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "passport": "^0.3.2",
+    "pg": "^5.1.0",
+    "pug": "^2.0.0-beta3",
+    "sequelize": "^3.23.3"
+  }
 }
