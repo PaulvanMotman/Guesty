@@ -18,7 +18,7 @@ app.use(require('cookie-parser')());
 
 /// Setting the jade views
 app.set('views', './views');
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('./public/'));
