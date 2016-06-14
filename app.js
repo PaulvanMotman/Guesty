@@ -7,11 +7,9 @@ const bcrypt = require('bcrypt')
 var Sequelize = require('sequelize');
 var session = require('express-session');
 
-/// Conecting to the blogapplication database
-var sequelize = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
-	host: 'localhost',
-	dialect: 'postgres',
-});
+/// Requiring modules
+var db = require('./app/models/database')
+
 
 /// Setting the jade views
 app.set('views', './views');
@@ -27,17 +25,6 @@ app.use(session({
 	saveUninitialized: false
 }));
 
-/// Declaring the tables
-var mainuser = sequelize.define('mainuser', {
-	firstname: Sequelize.STRING,
-	lastname: Sequelize.STRING,
-	email: Sequelize.STRING,
-	organisation: Sequelize.STRING,
-	username: Sequelize.STRING,
-	password: Sequelize.STRING,
-	telephone: Sequelize.STRING,
-	location: Sequelize.STRING
-});
 
 /// This part renders the landing page
 
@@ -57,7 +44,7 @@ app.post('/register', (req, res) => {
 			return err
 		}
 		else {
-			mainuser.create({
+			db.mainuser.create({
 				firstname: req.body.firstname,
 				lastname: req.body.lastname,				
 				organisation: req.body.organisation,
@@ -75,8 +62,6 @@ app.post('/register', (req, res) => {
 
 
 /// This part tells the app to listen to a server
-sequelize.sync({force: false}).then(function () {
-    var server = app.listen(3000, function (){
-            console.log ('Blog Application listening on: ' + server.address().port)
-    });
+var server = app.listen(3000, function (){
+        console.log ('Blog Application listening on: ' + server.address().port)
 });
