@@ -4,6 +4,7 @@ const pg = require('pg')
 const app = express();
 const bcrypt = require('bcrypt')
 
+var passport = require('passport');
 var Sequelize = require('sequelize');
 var session = require('express-session');
 
@@ -17,7 +18,7 @@ app.use(require('cookie-parser')());
 
 /// Setting the jade views
 app.set('views', './views');
-app.set('view engine', 'pug');
+app.set('view engine', 'jade');
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('./public/'));
@@ -29,12 +30,30 @@ app.use(session({
 	saveUninitialized: false
 }));
 
-// PASSPORT FB STUFF
+// Declaring the passport stuff
 var passport = require('passport');
 var facebook = require('./app/models/facebook')
 app.use(passport.initialize());
 app.use(passport.session());
 
+ // Using the flash middleware provided by connect-flash to store messages in session
+ // and displaying in templates
+var flash = require('connect-flash');
+app.use(flash());
+
+// Initialize Passport
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+var routes = require('./routes/index')(passport);
+app.use('/', routes);
+
+/// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
 
 /// This part tells the app to listen to a server
