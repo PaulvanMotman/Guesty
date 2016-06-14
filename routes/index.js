@@ -1,26 +1,61 @@
-/// This part renders the landing page
+const express = require('express');
+var router = express.Router();
 
-// LANDING
-app.get('/',
-	function(req, res) {
-		res.render('index', { user: req.user });
+var isAuthenticated = function (req, res, next) {
+	// if user is authenticated in the session, call the next() to call the next request handler 
+	// Passport adds this method to request object. A middleware is allowed to add properties to
+	// request and response objects
+	if (req.isAuthenticated())
+		return next();
+	// if the user is not authenticated then redirect him to the login page
+	res.redirect('/');
+}
+
+module.exports = function(passport){
+
+	/* GET login page. */
+	router.get('/', function(req, res) {
+    	// Display the Login page with any flash message, if any
+		res.render('index', { message: req.flash('message') });
 	});
-// LOGIN LOCALLY
-app.get('/login',
-	function(req, res){
-		res.render('login');
+
+	/* Handle Login POST */
+	router.post('/login', passport.authenticate('login', {
+		successRedirect: '/home',
+		failureRedirect: '/',
+		failureFlash : true  
+	}));
+
+	/* GET Registration Page */
+	router.get('/signup', function(req, res){
+		res.render('register',{message: req.flash('message')});
 	});
-// REGISTER LOCALLY
-app.get('/register', (req, res) => {
-	res.render("register")
-})
-// LOGIN FACEBOOK
-app.get('/login/facebook',
+
+	/* Handle Registration POST */
+	router.post('/signup', passport.authenticate('signup', {
+		successRedirect: '/home',
+		failureRedirect: '/signup',
+		failureFlash : true  
+	}));
+
+	/* GET Home Page */
+	router.get('/home', isAuthenticated, function(req, res){
+		res.render('home', { user: req.user });
+	});
+
+	/* Handle Logout */
+	router.get('/signout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+
+	// LOGIN FACEBOOK
+	router.get('/login/facebook',
 	passport.authenticate('facebook', {
 		scope : ['public_profile', 'user_events', 'email']
 	}));
 // RETURN AFTER LOGIN FB
-app.get('/login/facebook/return', 
+	router.get('/login/facebook/return', 
 	passport.authenticate('facebook', {
 		failureRedirect: '/login', 
 	}),
@@ -28,7 +63,7 @@ app.get('/login/facebook/return',
 		res.redirect('/profile');
 	});
 // GO TO PROFILE
-app.get('/profile',
+	router.get('/profile',
 	require('connect-ensure-login').ensureLoggedIn(),
 	function(req, res){
 		console.log("USER TESTING")
@@ -36,26 +71,9 @@ app.get('/profile',
 		res.render('profile', { user: req.user });
 	});
 
-/// This part renders the register page
+	return router;
+}
 
-app.post('/register', (req, res) => {
-	bcrypt.hash(req.body.password, 9, function(err, hash) {
-		if (err) {
-			return err
-		}
-		else {
-			db.mainuser.create({
-				firstname: req.body.firstname,
-				lastname: req.body.lastname,				
-				organisation: req.body.organisation,
-				email: req.body.email,
-				username: req.body.username,
-				password: hash,
-				telephone: req.body.telephone,
-				location: req.body.location
-			})
-		}
-	})
-	res.redirect('/')
-})
+
+
 
