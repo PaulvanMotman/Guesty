@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	div.container
+		div.row
+			div.col-sm-6.col-md-4.col-md-offset-4
+				h1.text-center.login-title Registration Details
+					div.signup-wall
+						form(class='form-signin', action='/signup', method='POST')
+							input(type='text', placeholder='firstname', name='firstname', class='form-control', required)
+							input(type='text', placeholder='lastname', name='lastname', class='form-control', required)
+							input(type='text', placeholder='email', name='email', class='form-control', required)
+							input(type='text', placeholder='organisation', name='organisation', class='form-control', required)
+							input(type='text', placeholder='username', name='username', class='form-control', required, autofocus)
+							input(type='text', placeholder='password', name='password', class='form-control nomargin', required)
+							input(type='text', placeholder='telephone', name='telephone', class='form-control', required)
+							input(type='text', placeholder='location', name='location', class='form-control', required)
+							button(class='btn btn-lg btn-primary btn-block', type='submit') Register
+							span.clearfix
+					#message
+						if message
+							h1.text-center.error-message #{message}

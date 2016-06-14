@@ -4,6 +4,7 @@ const pg = require('pg')
 const app = express();
 const bcrypt = require('bcrypt')
 
+var passport = require('passport');
 var Sequelize = require('sequelize');
 var session = require('express-session');
 
@@ -13,7 +14,7 @@ var db = require('./app/models/database')
 
 /// Setting the jade views
 app.set('views', './views');
-app.set('view engine', 'pug');
+app.set('view engine', 'jade');
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('./public/'));
@@ -25,40 +26,29 @@ app.use(session({
 	saveUninitialized: false
 }));
 
+// Declaring the passport stuff
+var passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
 
-/// This part renders the landing page
+ // Using the flash middleware provided by connect-flash to store messages in session
+ // and displaying in templates
+var flash = require('connect-flash');
+app.use(flash());
 
-app.get('/', (req, res) => {
-	res.render("index")
+// Initialize Passport
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+var routes = require('./routes/index')(passport);
+app.use('/', routes);
+
+/// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
-
-/// This part renders the register page
-
-app.get('/register', (req, res) => {
-	res.render("register")
-})
-
-app.post('/register', (req, res) => {
-	bcrypt.hash(req.body.password, 9, function(err, hash) {
-		if (err) {
-			return err
-		}
-		else {
-			db.mainuser.create({
-				firstname: req.body.firstname,
-				lastname: req.body.lastname,				
-				organisation: req.body.organisation,
-				email: req.body.email,
-				username: req.body.username,
-				password: hash,
-				telephone: req.body.telephone,
-				location: req.body.location
-			})
-		}
-	})
-	res.redirect('/')
-})
-
 
 
 /// This part tells the app to listen to a server
