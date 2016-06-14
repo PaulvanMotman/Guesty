@@ -7,7 +7,7 @@ var db = {
 var Sequelize = require( 'sequelize' )
 db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
 	host: 'localhost',
-	dialect: 'postgres',
+	dialect: 'postgres'
 });
 
 
