@@ -10,6 +10,10 @@ var session = require('express-session');
 /// Requiring modules
 var db = require('./app/models/database')
 
+// Use application-level middleware for common functionality, including
+// logging, parsing, and session handling.
+app.use(require('morgan')('combined'));
+app.use(require('cookie-parser')());
 
 /// Setting the jade views
 app.set('views', './views');
@@ -25,43 +29,15 @@ app.use(session({
 	saveUninitialized: false
 }));
 
-
-/// This part renders the landing page
-
-app.get('/', (req, res) => {
-	res.render("index")
-});
-
-/// This part renders the register page
-
-app.get('/register', (req, res) => {
-	res.render("register")
-})
-
-app.post('/register', (req, res) => {
-	bcrypt.hash(req.body.password, 9, function(err, hash) {
-		if (err) {
-			return err
-		}
-		else {
-			db.mainuser.create({
-				firstname: req.body.firstname,
-				lastname: req.body.lastname,				
-				organisation: req.body.organisation,
-				email: req.body.email,
-				username: req.body.username,
-				password: hash,
-				telephone: req.body.telephone,
-				location: req.body.location
-			})
-		}
-	})
-	res.redirect('/')
-})
+// PASSPORT FB STUFF
+var passport = require('passport');
+var facebook = require('./app/models/facebook')
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
 /// This part tells the app to listen to a server
 var server = app.listen(3000, function (){
-        console.log ('Blog Application listening on: ' + server.address().port)
+	console.log ('Blog Application listening on: ' + server.address().port)
 });
