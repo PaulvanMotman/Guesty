@@ -16,8 +16,8 @@ module.exports = function(passport){
 	/* GET login page. */
 	router.get('/', function(req, res) {
     	// Display the Login page with any flash message, if any
-		res.render('index', { message: req.flash('message') });
-	});
+    	res.render('index', { message: req.flash('message') });
+    });
 
 	/* Handle Login POST */
 	router.post('/login', passport.authenticate('login', {
@@ -39,8 +39,8 @@ module.exports = function(passport){
 	}));
 
 	/* GET Home Page */
-	router.get('/home', isAuthenticated, function(req, res){
-		res.render('home', { user: req.user });
+	router.get('/profile', isAuthenticated, function(req, res){
+		res.render('profile', { user: req.user });
 	});
 
 	/* Handle Logout */
@@ -51,19 +51,19 @@ module.exports = function(passport){
 
 	// LOGIN FACEBOOK
 	router.get('/login/facebook',
-	passport.authenticate('facebook', {
-		scope : ['public_profile', 'user_events', 'email']
-	}));
+		passport.authenticate('facebook', {
+			scope : ['public_profile', 'user_events', 'email']
+		}));
 // RETURN AFTER LOGIN FB
-	router.get('/login/facebook/return', 
+router.get('/login/facebook/return', 
 	passport.authenticate('facebook', {
-		failureRedirect: '/login', 
+		failureRedirect: '/', 
 	}),
 	function(req, res) {
 		res.redirect('/profile');
 	});
 // GO TO PROFILE
-	router.get('/profile',
+router.get('/profile',
 	require('connect-ensure-login').ensureLoggedIn(),
 	function(req, res){
 		console.log("USER TESTING")
@@ -71,7 +71,7 @@ module.exports = function(passport){
 		res.render('profile', { user: req.user });
 	});
 
-	return router;
+return router;
 }
 
 
