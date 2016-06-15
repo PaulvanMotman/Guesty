@@ -9,7 +9,7 @@ passport.use(new Strategy({
     profileFields: ['id', 'name', 'displayName', 'photos', 'emails', 'events', 'cover']
   },
   function(accessToken, refreshToken, profile, cb) {
-  	console.log("PROFILEEE")
+  	console.log("FACEBOOK PASSPORT")
 
   	// console.log(profile.events)
 

@@ -39,8 +39,8 @@ module.exports = function(passport){
 	}));
 
 	/* GET Home Page */
-	router.get('/profile', isAuthenticated, function(req, res){
-		res.render('profile', { user: req.user });
+	router.get('/home', isAuthenticated, function(req, res){
+		res.render('home', { user: req.user });
 	});
 
 	/* Handle Logout */
@@ -52,12 +52,12 @@ module.exports = function(passport){
 	// LOGIN FACEBOOK
 	router.get('/login/facebook',
 		passport.authenticate('facebook', {
-			scope : ['public_profile', 'user_events', 'email']
+			scope : ['public_profile', 'user_friends', 'email', 'user_events', 'user_location' ]
 		}));
 // RETURN AFTER LOGIN FB
 router.get('/login/facebook/return', 
 	passport.authenticate('facebook', {
-		failureRedirect: '/', 
+		failureRedirect: '/login/facebook', // set to login/facebook for security
 	}),
 	function(req, res) {
 		res.redirect('/profile');
@@ -68,6 +68,7 @@ router.get('/profile',
 	function(req, res){
 		console.log("USER TESTING")
 		console.log(req.user)
+
 		res.render('profile', { user: req.user });
 	});
 
