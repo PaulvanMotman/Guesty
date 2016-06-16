@@ -1,0 +1,25 @@
+Main User  			-->		 Event 			--> 							- guestlists				-->§	- guests
+- first name				- type of events    								- guestlist name					- add guests:
+- last name					- event name										- event name						- first name
+- email adres				- location																				- last name
+- naam organisatie			- start date/end date																	- phone number
+- username					- start time/end time																	- total guests
+- password					- company logo																			- guests class
+- telefoonnummer			- event flyer																		
+- plaats					- FACEBOOK DATA:
+								- event attendancy list
+								- user info of everyone on that list		- messages
+																				- message to each guest 
+																				in the guestlist
+
+
+																			- reports/data
+																				-
+																				-
+																				-
+																				-
+
+																			- events settings:
+																				- edit event
+																				- add sub users
+																				- print guest list
