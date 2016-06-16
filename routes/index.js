@@ -50,11 +50,27 @@ module.exports = function(passport){
 		res.redirect('/');
 	});
 
-	/* GET create event Page */
-	router.get('/createevent', isAuthenticated, function(req, res){
-		
+	// FACEBOOK API
+	var Facebook = require('facebook-node-sdk');
+
+	var facebook = new Facebook( { 
+    appID: process.env.CLIENT_ID, 
+    secret: process.env.CLIENT_SECRET 
 	});
 
+	/* GET create event Page */
+	router.get('/createevent', isAuthenticated, function(req, res){
+		facebook.setAccessToken(req.user.accessToken)
+
+		facebook.api( '/me/events?fields=admins,attending', function(err, res) {
+			if(!res || res.error) {
+				console.log(!res ? 'error occurred' : res.error);
+				return;
+			}
+			console.log(res)
+		});
+		res.redirect('/home');
+	});
 
 	// LOGIN FACEBOOK
 	router.get('/login/facebook',
@@ -70,36 +86,28 @@ module.exports = function(passport){
 		res.redirect('/home');
 	});
 
-
-	// FACEBOOK API ETC
-
-	var Facebook = require('facebook-node-sdk');
-
-	var facebook = new Facebook( { 
-    appID: process.env.CLIENT_ID, 
-    secret: process.env.CLIENT_SECRET 
-	});
-
 	// PROFILE FB
 	router.get('/profile',
 	    require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-
+	    	var FBdata = {}
 
 	        console.log("############### profile loaded ###################")
-	        console.log(req.user.accessToken)
 
 	        facebook.setAccessToken(req.user.accessToken)
 
-	        facebook.api( '/me/friends', function(err, res) {
+	        facebook.api( '/me/events?fields=admins,attending', function(err, res) {
 	            if(!res || res.error) {
 	                console.log(!res ? 'error occurred' : res.error);
 	                return;
 	            }
 	            console.log(res)
+	            FBdata.event = res
 	        });
-
-
-	        res.render('profile', { user: req.user });
+	        console.log(FBdata)
+	        res.render('profile', { 
+	        	user: req.user,
+	        	event: FBdata.event
+	        });
 	    });
 
 
