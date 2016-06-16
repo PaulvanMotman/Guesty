@@ -38,7 +38,7 @@ db.mainuser.hasMany(db.event);
 db.event.belongsTo(db.mainuser);
 
 // Synchronise with database
-db.conn.sync( {'force': true} ).then( 
+db.conn.sync( {'force': false} ).then( 
 	() => { console.log ( 'Sync succeeded' ) },
 	( err ) => { console.log('sync failed: ' + err) } 
 	)
