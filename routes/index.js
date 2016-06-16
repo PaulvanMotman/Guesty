@@ -39,8 +39,9 @@ module.exports = function(passport){
 	}));
 
 	/* GET Home Page */
-	router.get('/profile', isAuthenticated, function(req, res){
-		res.render('profile', { user: req.user });
+	router.get('/home', isAuthenticated, function(req, res){
+		res.render('home', { user: req.user });
+
 	});
 
 	/* Handle Logout */
@@ -54,22 +55,47 @@ module.exports = function(passport){
 		passport.authenticate('facebook', {
 			scope : ['public_profile', 'user_events', 'email']
 		}));
-// RETURN AFTER LOGIN FB
-router.get('/login/facebook/return', 
+	// RETURN AFTER LOGIN FB
+	router.get('/login/facebook/return', 
 	passport.authenticate('facebook', {
 		failureRedirect: '/', 
 	}),
 	function(req, res) {
-		res.redirect('/profile');
+		res.redirect('/home');
 	});
-// GO TO PROFILE
-router.get('/profile',
-	require('connect-ensure-login').ensureLoggedIn(),
-	function(req, res){
-		console.log("USER TESTING")
-		console.log(req.user)
-		res.render('profile', { user: req.user });
+
+
+	// FACEBOOK API ETC
+
+	var Facebook = require('facebook-node-sdk');
+
+	var facebook = new Facebook( { 
+    appID: process.env.CLIENT_ID, 
+    secret: process.env.CLIENT_SECRET 
 	});
+
+	// PROFILE FB
+	router.get('/profile',
+	    require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
+
+
+	        console.log("############### profile loaded ###################")
+	        console.log(req.user.accessToken)
+
+	        facebook.setAccessToken(req.user.accessToken)
+
+	        facebook.api( '/me/friends', function(err, res) {
+	            if(!res || res.error) {
+	                console.log(!res ? 'error occurred' : res.error);
+	                return;
+	            }
+	            console.log(res)
+	        });
+
+
+	        res.render('profile', { user: req.user });
+	    });
+
 
 return router;
 }

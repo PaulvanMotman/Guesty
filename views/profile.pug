@@ -1,18 +1,16 @@
 extends layout
 
 block content
-	div.container
-		div.row
-			div.col-sm-6.col-md-4.col-md-offset-4
-				#user
-					h1.text-center.login-title Welcome #{user.firstname}. Check your details below:
-						div.signup-wall
-							ul.user-details
-								li Username ---> #{user.username}
-								li Email    ---> #{user.email}
-								li First Name ---> #{user.firstname} 
-								li Last Name ---> #{user.lastname}
-						a(href='/signout', class='text-center new-account') Sign Out
-			h1 Hi #{user.displayName}
-			h2 #{user.emails[0].value}
-			img(src=user.photos[0].value)
+    div.container
+        div.row
+            div.col-sm-6.col-md-4.col-md-offset-4
+                #user
+                    h1.text-center.login-title Welcome #{user.firstname}. Check your details below:
+                        div.signup-wall
+                            ul.user-details
+                                img(src=user.photos[0].value)
+                                li UsernameFB ---> #{user.displayName}
+                                li Email : #{user.emails[0].value}
+                                li First Name : #{user.name.givenName} 
+                                li Last Name : #{user.name.familyName}
+                        a(href='/signout', class='text-center new-account') Sign Out
