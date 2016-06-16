@@ -9,16 +9,8 @@ block content
 						div.signup-wall
 							ul.user-details
 								img(src=user.photos[0].value)
-								
-								li UsernameLocal ---> #{user.username}
-								li Email    ---> #{user.email}
-								li First Name ---> #{user.firstname} 
-								li Last Name ---> #{user.lastname}
 								li UsernameFB ---> #{user.displayName}
 								li Email : #{user.emails[0].value}
 								li First Name : #{user.name.givenName} 
 								li Last Name : #{user.name.familyName}
 						a(href='/signout', class='text-center new-account') Sign Out
-			h1 Hi #{user.displayName}
-			h2 #{user.emails[0].value}
-			img(src=user.photos[0].value)
