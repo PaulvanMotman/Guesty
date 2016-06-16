@@ -27,16 +27,6 @@ db.mainuser = db.conn.define( 'mainuser', {
 	location: Sequelize.STRING
 })
 
-// Events
-db.event = db.conn.define( 'event', {
-    eventname: Sequelize.STRING,
-    venue: Sequelize.STRING,
-    typeofevent: Sequelize.STRING,
-    location: Sequelize.STRING ,
-    date: Sequelize.STRING,
-    time: Sequelize.STRING
-})
-
 // // Events
 // db.event = db.conn.define( 'event', {
 // 	eventname: Sequelize.STRING,
@@ -50,6 +40,7 @@ db.event = db.conn.define( 'event', {
 // /// Declaring the relationships between tables
 // db.mainuser.hasMany(db.event);
 // db.event.belongsTo(db.mainuser);
+>>>>>>> master
 
 // Synchronise with database
 db.conn.sync(  ).then( 
