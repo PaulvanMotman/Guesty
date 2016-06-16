@@ -50,6 +50,12 @@ module.exports = function(passport){
 		res.redirect('/');
 	});
 
+	/* GET create event Page */
+	router.get('/createevent', isAuthenticated, function(req, res){
+		
+	});
+
+
 	// LOGIN FACEBOOK
 	router.get('/login/facebook',
 		passport.authenticate('facebook', {

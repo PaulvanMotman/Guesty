@@ -1,0 +1,20 @@
+extends layout
+
+block content
+	div.container
+		div.row
+			div.col-sm-6.col-md-4.col-md-offset-4
+				h1.text-center.login-title Create event
+					div.signup-wall
+						form(class='form-signin', action='/createanevent', method='POST')
+							input(type='text', placeholder='eventname', name='eventname', class='form-control', required)
+							input(type='text', placeholder='venue', name='venue', class='form-control', required)
+							input(type='text', placeholder='typeofevent', name='typeofevent', class='form-control', required)
+							input(type='text', placeholder='location', name='location', class='form-control', required)
+							input(type='text', placeholder='date', name='date', class='form-control', required, autofocus)
+							input(type='text', placeholder='time', name='time', class='form-control nomargin', required)
+							button(class='btn btn-lg btn-primary btn-block', type='submit') Register
+							span.clearfix
+					#message
+						if message
+							h1.text-center.error-message #{message}
