@@ -47,20 +47,33 @@ passport.use(new Strategy({
 }));
 
 passport.serializeUser(function(user, cb) {
- cb(null, user.id);
  console.log("###$$$$$$$$$ $$$ SERIALIZEE")
- console.log(user.id)
- console.log("### END SER ###")
+ console.log(user.accessToken)
+  var sessionUser = {
+    id: user.id,
+    accessToken: user.accessToken
+  }
+  console.log("### END SER ###")
+cb(null, sessionUser);
 });
 
 passport.deserializeUser(function(id, done) {
+    console.log("#### DESERIALIZE DONE ####")
+    var accessToken = id.accessToken;
       db.mainuser.find( { 
         where: {
-            fbid: id
+            fbid: id.id
           }
-        }).then(
-        function(user){ done(null, user) },
-        function(err){ done(err, null) }
+        }
+        ).then(
+        function(user){ 
+          user.accessToken = accessToken;
+          // console.log(user)
+          done(null, user) 
+        },
+        function(err){ 
+          done(err, null) 
+        }
       );
 });
 

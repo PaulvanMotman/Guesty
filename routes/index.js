@@ -40,21 +40,37 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
+	// LOGIN FACEBOOK
+	router.get('/login/facebook',
+		passport.authenticate('facebook', {
+			scope : ['public_profile', 'user_events', 'email']
+		}));
+	// RETURN AFTER LOGIN FB
+	router.get('/login/facebook/return', 
+	passport.authenticate('facebook', {
+		failureRedirect: '/', 
+	}),
+	function(req, res) {
+		res.redirect('/home');
+	});
+
 	/* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
 		console.log("##### HOME PAGE #####")
+		console.log(">>>>>>>>>>>> req.user .dataValues <<<<<<<<<<<<<")
 		console.log(req.user.dataValues)
-		console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$############################")
-
+		console.log(">>>> req.user.accessToken <<<<<")
+		console.log(req.user.accessToken)
+		console.log("####### END HOME ######")
 	db.event.findAll({ 
 			where: {
 				mainuserId: req.user.dataValues.id
 			}
 			}).then(function (event) {
+				console.log("### EVENTS ### ON ### HOME ###")
 				console.log(event)
 				res.render('home', { user: req.user })
 			})
-		// res.render('home', { user: req.user });
 	});
 
 	/* Handle Logout */
@@ -73,8 +89,9 @@ module.exports = function(passport){
 
 	/* GET create event Page */
 	router.get('/createevent', isAuthenticated, function(req, res){
+		console.log(">>>>>>>>>>>>>>> CREATE EVENT <<<<<<<<<<<<<<<<<")
 		facebook.setAccessToken(req.user.accessToken)
-		console.log("button is working")
+		console.log(req.user.accessToken)
  
 		facebook.api( '/me/events?fields=name,id,is_viewer_admin,owner,cover,place,start_time', function(err, res) {
 			if(!res || res.error) {
@@ -84,6 +101,7 @@ module.exports = function(passport){
 			for (var i = 0; i < res.data.length; i++) {
 				if (res.data[i].is_viewer_admin) {
 					var theevent = res.data[i]
+					console.log(" WWWWW THE EVENT WWWWW")
 					console.log(theevent)
 					db.mainuser.findOne({
 						where: {
@@ -138,19 +156,6 @@ module.exports = function(passport){
 		res.redirect('/home');
 	});
 
-	// LOGIN FACEBOOK
-	router.get('/login/facebook',
-		passport.authenticate('facebook', {
-			scope : ['public_profile', 'user_events', 'email']
-		}));
-	// RETURN AFTER LOGIN FB
-	router.get('/login/facebook/return', 
-	passport.authenticate('facebook', {
-		failureRedirect: '/', 
-	}),
-	function(req, res) {
-		res.redirect('/home');
-	});
 
 
 return router;
