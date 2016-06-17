@@ -72,11 +72,17 @@ module.exports = function(passport){
 			}
 			for (var i = 0; i < res.data.length; i++) {
 				if (res.data[i].is_viewer_admin) {
-					db.event.create({
-						'name': res.data[i].name,
-						'fbid': res.data[i].id
+					var theevent = res.data[i]
+					db.mainuser.findOne({
+						where: {
+							fbid: req.user.id 
+						}
+					}).then(function(theuser){
+						theuser.createEvent({
+							'name': theevent.name,
+							'fbid': theevent.id
+						})
 					})
-					console.log(res.data[i])
 				}
 			}
 
