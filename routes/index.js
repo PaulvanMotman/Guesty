@@ -73,32 +73,56 @@ module.exports = function(passport){
 			for (var i = 0; i < res.data.length; i++) {
 				if (res.data[i].is_viewer_admin) {
 					var theevent = res.data[i]
+					console.log(theevent)
 					db.mainuser.findOne({
 						where: {
 							fbid: req.user.id 
 						}
 					}).then(function(theuser){
-						theuser.createEvent({
-							'name': theevent.name,
-							'fbid': theevent.id
-						})
+						var theuser = theuser
+						findOrCreateUser = function(){
+							db.event.find({ where: {'fbid' :  theevent.id }}).then(function(event) {
+      							// already exists
+      							if (event) {
+      								console.log('Event already exists with eventname: '+ event);
+      								return;
+      							} else {
+        							// if there is no event with that facebook id
+        							// create the event
+        							console.log('cant find event, must create')
+        							if (theevent.cover == undefined) {
+	        							theuser.createEvent({
+											'name': theevent.name,
+											'fbid': theevent.id,
+											'owner': theevent.owner.name,
+											'location': theevent.place.name,
+											'starttime': theevent.start_time,
+	        							}).then(function(user) {
+	        								console.log('Event Registration successful: ' + user.firstname);
+	        								return;    
+	        							});
+	        						}
+	        						else {
+	        							theuser.createEvent({
+											'name': theevent.name,
+											'fbid': theevent.id,
+											'owner': theevent.owner.name,
+											'location': theevent.place.name,
+											'starttime': theevent.start_time,
+											'cover': theevent.cover.source
+	        							}).then(function(user) {
+	        								console.log('Event Registration successful: ' + user.firstname);
+	        								return;    
+	        							});
+	        						}
+    							}
+							});
+						};
+						process.nextTick(findOrCreateUser);
 					})
 				}
 			}
-
         	console.log("The data is STORED")
-			// db.event.create({
-   //              'firstname': req.param('firstname'),
-   //              'lastname': req.param('lastname'),
-   //              'organisation': req.param('organisation'),
-   //              'email': req.param('email'),
-   //          	'username': username,
-   //          	'password': createHash(password),
-   //              'telephone': req.param('telephone'),
-   //              'location': req.param('location')
-   //          }).then(function() {
-   //          	console.log("The data is STORED")
-   //              res.redirect('/home');
 		});
 		res.redirect('/home');
 	});
@@ -116,30 +140,6 @@ module.exports = function(passport){
 	function(req, res) {
 		res.redirect('/home');
 	});
-
-	// // PROFILE FB
-	// router.get('/profile',
-	//     require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-	//     	var FBdata = {}
-
-	//         console.log("############### profile loaded ###################")
-
-	//         facebook.setAccessToken(req.user.accessToken)
-
-	//         facebook.api( '/me/events?fields=admins,attending', function(err, res) {
-	//             if(!res || res.error) {
-	//                 console.log(!res ? 'error occurred' : res.error);
-	//                 return;
-	//             }
-	//             console.log(res)
-	//             FBdata.event = res
-	//         });
-	//         console.log(FBdata)
-	//         res.render('profile', { 
-	//         	user: req.user,
-	//         	event: FBdata.event
-	//         });
-	//     });
 
 
 return router;

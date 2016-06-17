@@ -32,7 +32,11 @@ db.mainuser = db.conn.define( 'mainuser', {
 // Events
 db.event = db.conn.define( 'event', {
 	name: Sequelize.STRING,
-	fbid: Sequelize.STRING
+	fbid: Sequelize.STRING,
+	owner: Sequelize.STRING,
+	location: Sequelize.STRING,
+	starttime: Sequelize.STRING,
+	cover: Sequelize.STRING
 })
 
 /// Declaring the relationships between tables
