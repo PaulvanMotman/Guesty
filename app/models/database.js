@@ -17,9 +17,11 @@ db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRE
 //// Models
 // Users
 db.mainuser = db.conn.define( 'mainuser', {
+	fbid: Sequelize.STRING,
 	firstname: Sequelize.STRING,
 	lastname: Sequelize.STRING,
 	email: Sequelize.STRING,
+	photo: Sequelize.STRING,
 	organisation: Sequelize.STRING,
 	username: Sequelize.STRING,
 	password: Sequelize.STRING,
