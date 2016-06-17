@@ -1,4 +1,4 @@
-Main User  			-->		 Event 			--> 							- guestlists				-->		- guests
+Main User  			-->		 Event 			--> 				- subuser		- guestlists				-->		- guests
 - first name				- type of events    								- guestlist name					- add guests:
 - last name					- event name										- event name						- first name
 - email adres				- location																				- last name
