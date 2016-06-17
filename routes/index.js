@@ -42,8 +42,19 @@ module.exports = function(passport){
 
 	/* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
-		res.render('home', { user: req.user });
+		console.log("##### HOME PAGE #####")
+		console.log(req.user.dataValues)
+		console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$############################")
 
+	db.event.findAll({ 
+			where: {
+				mainuserId: req.user.dataValues.id
+			}
+			}).then(function (event) {
+				console.log(event)
+				res.render('home', { user: req.user })
+			})
+		// res.render('home', { user: req.user });
 	});
 
 	/* Handle Logout */
