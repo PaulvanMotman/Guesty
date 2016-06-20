@@ -32,7 +32,7 @@ db.mainuser = db.conn.define( 'mainuser', {
 // Events
 db.event = db.conn.define( 'event', {
 	name: Sequelize.STRING,
-	fbid: Sequelize.BIGINT,
+	fbeventid: Sequelize.BIGINT,
 	owner: Sequelize.STRING,
 	location: Sequelize.STRING,
 	starttime: Sequelize.STRING,

@@ -56,20 +56,13 @@ module.exports = function(passport){
 
 	/* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
-		console.log("##### HOME PAGE #####")
-		console.log(">>>>>>>>>>>> req.user .dataValues <<<<<<<<<<<<<")
-		console.log(req.user.dataValues)
-		console.log(">>>> req.user.accessToken <<<<<")
-		console.log(req.user.accessToken)
-		console.log("####### END HOME ######")
 	db.event.findAll({ 
 			where: {
 				mainuserId: req.user.dataValues.id
 			}
 			}).then(function (event) {
-				console.log("### EVENTS ### ON ### HOME ###")
-				console.log(event)
-				res.render('home', { user: req.user })
+				console.log("THIS ARE MY TWO EVENTS!!!!!!!!!: " + event)
+				res.render('home', { user: req.user, events: event })
 			})
 	});
 
@@ -99,16 +92,16 @@ module.exports = function(passport){
 			}
 			makeEvent = function(thisevent, theuser){
 				if (thisevent.is_viewer_admin) {
-					db.event.find({ where: {'fbid' :  thisevent.id }}).then(function(event) {
+					db.event.find({ where: {'fbeventid' :  thisevent.id }}).then(function(event) {
 						if (event) {
-							console.log('Event already exists with eventname: '+ event);
+							console.log('Event already exists');
 
 						} else {
 							console.log('cant find event, must create')
 							if (thisevent.cover == undefined) {
 								theuser.createEvent({
 									'name': thisevent.name,
-									'fbid': thisevent.id,
+									'fbeventid': thisevent.id,
 									'owner': thisevent.owner.name,
 									'location': thisevent.place.name,
 									'starttime': thisevent.start_time,
@@ -119,7 +112,7 @@ module.exports = function(passport){
 							} else {
 								theuser.createEvent({
 									'name': thisevent.name,
-									'fbid': thisevent.id,
+									'fbeventid': thisevent.id,
 									'owner': thisevent.owner.name,
 									'location': thisevent.place.name,
 									'starttime': thisevent.start_time,
@@ -143,9 +136,17 @@ module.exports = function(passport){
 				}
 			})
 			console.log("The data is STORED")
+			response.redirect('/home');
 		});
-		response.redirect('/home');
 	});
+
+
+	/// Dashboard Event
+	router.get('/dashboard/:fbeventid', function(req, res) {
+		var requestParameters = req.params;
+		console.log(requestParameters)
+    	res.render('dashboard', { message: req.flash('message') });
+    });
 
 	// LOGIN FACEBOOK
 	router.get('/login/facebook',

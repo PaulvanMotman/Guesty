@@ -13,13 +13,13 @@ passport.use(new Strategy({
   
   profile.accessToken = accessToken;
 
-  console.log(profile)
+
 
   findOrCreateUser = function(){
     db.mainuser.find({ where: {'fbid' :  profile.id }}).then(function(user) {
       // already exists
       if (user) {
-        console.log('User already exists with username: '+ user);
+        console.log('User already exists with username: '+ user.firstname);
         return;
       } else {
         // if there is no user with that facebook id
@@ -47,18 +47,14 @@ passport.use(new Strategy({
 }));
 
 passport.serializeUser(function(user, cb) {
-console.log("### SERIALIZEE FB ###")
-console.log(user.accessToken)
  var sessionUser = {
    id: user.id,
    accessToken: user.accessToken
  }
- console.log("### END SERIALIZE ###")
 cb(null, sessionUser);
 });
 
 passport.deserializeUser(function(id, done) {
-   console.log("#### START DESERIALIZE ####")
    var accessToken = id.accessToken;
      db.mainuser.find( { 
        where: {
