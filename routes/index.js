@@ -40,10 +40,37 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
+	// LOGIN FACEBOOK
+	router.get('/login/facebook',
+		passport.authenticate('facebook', {
+			scope : ['public_profile', 'user_events', 'email']
+		}));
+	// RETURN AFTER LOGIN FB
+	router.get('/login/facebook/return', 
+	passport.authenticate('facebook', {
+		failureRedirect: '/', 
+	}),
+	function(req, res) {
+		res.redirect('/home');
+	});
+
 	/* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
-		res.render('home', { user: req.user });
-
+		console.log("##### HOME PAGE #####")
+		console.log(">>>>>>>>>>>> req.user .dataValues <<<<<<<<<<<<<")
+		console.log(req.user.dataValues)
+		console.log(">>>> req.user.accessToken <<<<<")
+		console.log(req.user.accessToken)
+		console.log("####### END HOME ######")
+	db.event.findAll({ 
+			where: {
+				mainuserId: req.user.dataValues.id
+			}
+			}).then(function (event) {
+				console.log("### EVENTS ### ON ### HOME ###")
+				console.log(event)
+				res.render('home', { user: req.user })
+			})
 	});
 
 	/* Handle Logout */

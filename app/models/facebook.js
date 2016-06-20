@@ -10,7 +10,9 @@ passport.use(new Strategy({
    profileFields: ['id', 'name', 'displayName', 'events', 'emails', 'picture.width(800).height(800)']
  },
  function(accessToken, refreshToken, profile, cb) {
+  
   profile.accessToken = accessToken;
+
   console.log(profile)
 
   findOrCreateUser = function(){
@@ -22,7 +24,7 @@ passport.use(new Strategy({
       } else {
         // if there is no user with that facebook id
         // create the user
-        console.log('cant find user, must create')
+        console.log('cant find user, now I create a new user')
 
         // save the user
         db.mainuser.create({
@@ -32,7 +34,7 @@ passport.use(new Strategy({
           'photo': profile.photos[0].value,
           'email': profile.emails[0].value
         }).then(function(user) {
-          console.log('User Registration successful: ' + user.firstname);
+          console.log('User Registration successful for : ' + user.firstname);
           return;    
         });
        }
