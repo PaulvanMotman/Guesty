@@ -56,75 +56,68 @@ module.exports = function(passport){
 	var Facebook = require('facebook-node-sdk');
 
 	var facebook = new Facebook( { 
-    appID: process.env.CLIENT_ID, 
-    secret: process.env.CLIENT_SECRET 
+		appID: process.env.CLIENT_ID, 
+		secret: process.env.CLIENT_SECRET 
 	});
 
 	/* GET create event Page */
-	router.get('/createevent', isAuthenticated, function(req, res){
+	router.get('/createevent', isAuthenticated, function(req, response){
 		facebook.setAccessToken(req.user.accessToken)
 		console.log("button is working")
- 
-		facebook.api( '/me/events?fields=name,id,is_viewer_admin,owner,cover,place,start_time', function(err, res) {
+
+		facebook.api( '/me/events?fields=name,id,is_viewer_admin,owner,cover,place,start_time&limit=50', function(err, res) {
 			if(!res || res.error) {
 				console.log(!res ? 'error occurred' : res.error);
 				return;
 			}
-			for (var i = 0; i < res.data.length; i++) {
-				if (res.data[i].is_viewer_admin) {
-					var theevent = res.data[i]
-					console.log(theevent)
-					db.mainuser.findOne({
-						where: {
-							fbid: req.user.id 
+			makeEvent = function(thisevent, theuser){
+				if (thisevent.is_viewer_admin) {
+					db.event.find({ where: {'fbid' :  thisevent.id }}).then(function(event) {
+						if (event) {
+							console.log('Event already exists with eventname: '+ event);
+
+						} else {
+							console.log('cant find event, must create')
+							if (thisevent.cover == undefined) {
+								theuser.createEvent({
+									'name': thisevent.name,
+									'fbid': thisevent.id,
+									'owner': thisevent.owner.name,
+									'location': thisevent.place.name,
+									'starttime': thisevent.start_time,
+								}).then(function(user) {
+									console.log('Event Registration successful without cover ');
+
+								});
+							} else {
+								theuser.createEvent({
+									'name': thisevent.name,
+									'fbid': thisevent.id,
+									'owner': thisevent.owner.name,
+									'location': thisevent.place.name,
+									'starttime': thisevent.start_time,
+									'cover': thisevent.cover.source
+								}).then(function(user) {
+									console.log('Event Registration successful with cover ');
+
+								});
+							}
 						}
-					}).then(function(theuser){
-						var theuser = theuser
-						findOrCreateUser = function(){
-							db.event.find({ where: {'fbid' :  theevent.id }}).then(function(event) {
-      							// already exists
-      							if (event) {
-      								console.log('Event already exists with eventname: '+ event);
-      								return;
-      							} else {
-        							// if there is no event with that facebook id
-        							// create the event
-        							console.log('cant find event, must create')
-        							if (theevent.cover == undefined) {
-	        							theuser.createEvent({
-											'name': theevent.name,
-											'fbid': theevent.id,
-											'owner': theevent.owner.name,
-											'location': theevent.place.name,
-											'starttime': theevent.start_time,
-	        							}).then(function(user) {
-	        								console.log('Event Registration successful: ' + user.firstname);
-	        								return;    
-	        							});
-	        						}
-	        						else {
-	        							theuser.createEvent({
-											'name': theevent.name,
-											'fbid': theevent.id,
-											'owner': theevent.owner.name,
-											'location': theevent.place.name,
-											'starttime': theevent.start_time,
-											'cover': theevent.cover.source
-	        							}).then(function(user) {
-	        								console.log('Event Registration successful: ' + user.firstname);
-	        								return;    
-	        							});
-	        						}
-    							}
-							});
-						};
-						process.nextTick(findOrCreateUser);
 					})
 				}
-			}
-        	console.log("The data is STORED")
+			};
+			db.mainuser.findOne({
+				where: {
+					id: req.user.id 
+				}
+			}).then(function(theuser){
+				for (var i = 0; i < res.data.length; i++) {
+					makeEvent(res.data[i], theuser)
+				}
+			})
+			console.log("The data is STORED")
 		});
-		res.redirect('/home');
+		response.redirect('/home');
 	});
 
 	// LOGIN FACEBOOK
@@ -134,15 +127,15 @@ module.exports = function(passport){
 		}));
 	// RETURN AFTER LOGIN FB
 	router.get('/login/facebook/return', 
-	passport.authenticate('facebook', {
-		failureRedirect: '/', 
-	}),
-	function(req, res) {
-		res.redirect('/home');
-	});
+		passport.authenticate('facebook', {
+			failureRedirect: '/', 
+		}),
+		function(req, res) {
+			res.redirect('/home');
+		});
 
 
-return router;
+	return router;
 }
 
 
