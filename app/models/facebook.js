@@ -47,35 +47,33 @@ passport.use(new Strategy({
 }));
 
 passport.serializeUser(function(user, cb) {
- console.log("###$$$$$$$$$ $$$ SERIALIZEE")
- console.log(user.accessToken)
-  var sessionUser = {
-    id: user.id,
-    accessToken: user.accessToken
-  }
-  console.log("### END SER ###")
+console.log("### SERIALIZEE FB ###")
+console.log(user.accessToken)
+ var sessionUser = {
+   id: user.id,
+   accessToken: user.accessToken
+ }
+ console.log("### END SERIALIZE ###")
 cb(null, sessionUser);
 });
 
 passport.deserializeUser(function(id, done) {
-    console.log("#### DESERIALIZE DONE ####")
-    var accessToken = id.accessToken;
-      db.mainuser.find( { 
-        where: {
-            fbid: id.id
-          }
-        }
-        ).then(
-        function(user){ 
-          user.accessToken = accessToken;
-          // console.log(user)
-          done(null, user) 
-        },
-        function(err){ 
-          done(err, null) 
-        }
-      );
+   console.log("#### START DESERIALIZE ####")
+   var accessToken = id.accessToken;
+     db.mainuser.find( { 
+       where: {
+           fbid: id.id
+         }
+       }
+       ).then(
+       function(user){ 
+         user.accessToken = accessToken;
+         done(null, user) 
+       },
+       function(err){ 
+         done(err, null) 
+       }
+     );
 });
 
 
-// events: { data: [Object], paging: [Object] } } }
