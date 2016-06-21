@@ -6,6 +6,12 @@ block content
 			div.col-sm-6.col-md-4.col-md-offset-4
 				h1.text-center.login-title Sign in to our Guesty app
 					div.account-wall
+						h3 not working yet
+						a(href='/login/facebook', class='text-center new-account') Login through facebook
+						a.btn.btn-block.btn-social.btn-facebook
+							span.fa.fa-facebook
+							|  Not sign in with Facebook
+					div.account-wall
 						img(class='profile-img', src='https://cdn4.iconfinder.com/data/icons/security-overcolor/512/access_key-512.png')
 						form(class='form-signin', action='/login', method='POST')
 							input(type='text', name='username' class='form-control', placeholder='Username',required, autofocus)
@@ -13,7 +19,6 @@ block content
 							button(class='btn btn-lg btn-primary btn-block', type='submit') Sign in
 							span.clearfix
 					a(href='/signup', class='text-center new-account') Create an account
-					a(href='/login/facebook', class='text-center new-account') Login through facebook
 					#message
 					if message
 						h1.text-center.error-message #{message}
