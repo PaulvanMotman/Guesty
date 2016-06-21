@@ -24,3 +24,12 @@ Main User  			-->		 Event 			--> 				- subuser		- guestlists				-->		- guests
 																				- add sub users
 																				- print guest list
 
+
+
+
+
+Je opent de dashboard en wanneer je op facebook attend lijst klikt zie je een overview van 
+iedereen die attend heeft geklikt op je feest. Wanneer je deze aanklikt kan je ze in de 
+gastenlijst gooien, en dan (eventueel) popt er ook een window op waar je nog overige info bij kan zetten.
+
+*Daarnaast kan je zelf ook manual mensen in de gastenlijst gooien (als de eventorganiser dat toe laat.)

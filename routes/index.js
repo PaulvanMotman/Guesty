@@ -149,9 +149,37 @@ module.exports = function(passport){
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
 		db.event.find({ where: {'fbeventid' :  request.params.fbeventid }}).then(function(event) {
 			console.log("GUESTLIST HERE ---> " + event.attending)
-			response.render('dashboard', { guestlist: event.attending});
+			response.render('dashboard', { guestlist: event.attending, fbeventid: request.params.fbeventid});
 		})
     });
+
+	/// Save guest in to guestlist
+	router.get('/save', isAuthenticated, function(request, response) {
+		console.log(request.query.fbeventid)
+		db.event.findOne({ where: {'fbeventid' :  request.query.fbeventid }}).then(function(event) {
+			console.log(request.query.guest)
+    		db.guestlist.find({ where: {'name' :  request.query.guest }}).then(function(guest) {
+                // already exists
+                if (guest) {
+                	console.log('Guest already exists with username: '+ db.guestlist.name);
+                	return 
+                } else {
+                    // if there is no user with that email
+                    // create the user
+                    console.log('cant find guest, must create')
+
+                    // save the user
+                    event.createGuestlist({
+                        'name': request.query.guest
+                    }).then(function(guest) {
+                    	console.log("The data is STORED")
+						response.redirect('/dashboard/' + request.query.fbeventid);
+                    });
+                }
+            });
+    	})
+	})
+
 
 	// LOGIN FACEBOOK
 	router.get('/login/facebook',

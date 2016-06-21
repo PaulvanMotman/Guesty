@@ -3,4 +3,10 @@ extends layout
 block content
 	h1 Check the guestlist of your event here:
 	each guest in guestlist
-		p= guest.name
+		p
+			input(class='checkbox', type='checkbox', value='1')
+			label= guest.name
+	p#fbeventid #{fbeventid}
+
+
+
