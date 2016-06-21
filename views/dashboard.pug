@@ -1,4 +1,6 @@
 extends layout
 
 block content
-	h1 It works
+	h1 Check the guestlist of your event here:
+	each guest in guestlist
+		p= guest.name

@@ -36,7 +36,9 @@ db.event = db.conn.define( 'event', {
 	owner: Sequelize.STRING,
 	location: Sequelize.STRING,
 	starttime: Sequelize.STRING,
-	cover: Sequelize.STRING
+	cover: Sequelize.STRING,
+	attending: Sequelize.JSON,
+	attending_count: Sequelize.STRING
 })
 
 /// Declaring the relationships between tables

@@ -85,7 +85,7 @@ module.exports = function(passport){
 		facebook.setAccessToken(req.user.accessToken)
 		console.log("button is working")
 
-		facebook.api( '/me/events?fields=name,id,is_viewer_admin,owner,cover,place,start_time&limit=50', function(err, res) {
+		facebook.api( '/me/events?fields=name,id,is_viewer_admin,owner,attending,attending_count,cover,place,start_time&limit=50', function(err, res) {
 			if(!res || res.error) {
 				console.log(!res ? 'error occurred' : res.error);
 				return;
@@ -105,6 +105,8 @@ module.exports = function(passport){
 									'owner': thisevent.owner.name,
 									'location': thisevent.place.name,
 									'starttime': thisevent.start_time,
+									'attending': thisevent.attending.data,
+									'attending_count': thisevent.attending_count
 								}).then(function(user) {
 									console.log('Event Registration successful without cover ');
 
@@ -116,7 +118,9 @@ module.exports = function(passport){
 									'owner': thisevent.owner.name,
 									'location': thisevent.place.name,
 									'starttime': thisevent.start_time,
-									'cover': thisevent.cover.source
+									'cover': thisevent.cover.source,
+									'attending': thisevent.attending.data,
+									'attending_count': thisevent.attending_count
 								}).then(function(user) {
 									console.log('Event Registration successful with cover ');
 
@@ -142,10 +146,11 @@ module.exports = function(passport){
 
 
 	/// Dashboard Event
-	router.get('/dashboard/:fbeventid', function(req, res) {
-		var requestParameters = req.params;
-		console.log(requestParameters)
-    	res.render('dashboard', { message: req.flash('message') });
+	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
+		db.event.find({ where: {'fbeventid' :  request.params.fbeventid }}).then(function(event) {
+			console.log("GUESTLIST HERE ---> " + event.attending)
+			response.render('dashboard', { guestlist: event.attending});
+		})
     });
 
 	// LOGIN FACEBOOK
