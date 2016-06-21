@@ -1,12 +1,16 @@
 extends layout
 
 block content
-	h1 Check the guestlist of your event here:
-	each guest in guestlist
-		p
+	h1 Check the attendancy list of your fb-event here:
+	each person in guest
+		div
 			input(class='checkbox', type='checkbox', value='1')
-			label= guest.name
+			label= person.name
+			div.guestinfo(style= "display: none")
+				h1 hello 
+
 	p#fbeventid #{fbeventid}
+
 
 
 
