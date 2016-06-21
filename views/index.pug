@@ -6,13 +6,13 @@ block content
 			div.col-sm-6.col-md-4.col-md-offset-4
 				h1.text-center.login-title
 					div.account-wall
+						div.login-welcome
+							h3 Welcome to Guesty
+							h5 Your Personal Facebook based Guestlist Management Application
 						img(class='profile-img', src='images/facebook_login.png')
-						h3 Welcome to Guesty
-						h5 Your Personal Facebook based Guestlist Management Application
-						a(href='/login/facebook', class='text-center new-account') Login through facebook
-						a.btn.btn-block.btn-social.btn-facebook
+						a.btn.btn-block.btn-social.btn-facebook(href='/login/facebook')
 							span.fa.fa-facebook
-							|  Not sign in with Facebook
+							|  Login with Facebook (recommended)
 					div.account-wall
 						img(class='profile-img', src='https://cdn4.iconfinder.com/data/icons/security-overcolor/512/access_key-512.png')
 						form(class='form-signin', action='/login', method='POST')
