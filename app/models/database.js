@@ -41,16 +41,24 @@ db.event = db.conn.define( 'event', {
 	attending_count: Sequelize.STRING
 })
 
-db.guestlist = db.conn.define( 'guestlist', {
-	name: Sequelize.STRING
+db.guest = db.conn.define( 'guest', {
+	name: Sequelize.STRING,
+	firstname: Sequelize.STRING,
+	lastname: Sequelize.STRING,
+	photo: Sequelize.STRING,
+	fbeventId: Sequelize.STRING
+
 })
 
 /// Declaring the relationships between tables
 db.mainuser.hasMany(db.event);
 db.event.belongsTo(db.mainuser);
 
-db.event.hasMany(db.guestlist);
-db.guestlist.belongsTo(db.event);
+db.event.hasMany(db.guest);
+db.guest.belongsTo(db.event);
+
+db.mainuser.hasMany(db.guest);
+db.guest.belongsTo(db.mainuser);
 
 // Synchronise with database
 db.conn.sync( {'force': true} ).then( 

@@ -149,34 +149,44 @@ module.exports = function(passport){
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
 		db.event.find({ where: {'fbeventid' :  request.params.fbeventid }}).then(function(event) {
 			console.log("GUESTLIST HERE ---> " + event.attending)
-			response.render('dashboard', { guestlist: event.attending, fbeventid: request.params.fbeventid});
+			response.render('dashboard', { guest: event.attending, fbeventid: request.params.fbeventid});
 		})
     });
 
-	/// Save guest in to guestlist
+	/// Save guest in to guest
 	router.get('/save', isAuthenticated, function(request, response) {
-		console.log(request.query.fbeventid)
-		db.event.findOne({ where: {'fbeventid' :  request.query.fbeventid }}).then(function(event) {
-			console.log(request.query.guest)
-    		db.guestlist.find({ where: {'name' :  request.query.guest }}).then(function(guest) {
-                // already exists
-                if (guest) {
-                	console.log('Guest already exists with username: '+ db.guestlist.name);
-                	return 
-                } else {
-                    // if there is no user with that email
-                    // create the user
-                    console.log('cant find guest, must create')
-
-                    // save the user
-                    event.createGuestlist({
-                        'name': request.query.guest
-                    }).then(function(guest) {
-                    	console.log("The data is STORED")
-						response.redirect('/dashboard/' + request.query.fbeventid);
-                    });
-                }
-            });
+		Promise.all([
+			db.guest.find({ 
+				where: {
+					'name' :  request.query.guest, 
+					'fbeventId': request.query.fbeventid
+				}
+			}),
+	        db.event.findOne({ 
+	        	where: {
+	        		'fbeventid' :  request.query.fbeventid 
+	        	}
+	        })
+        ]).then(function(allofthem){
+            // already exists
+            if (allofthem[0]) {
+            	console.log('Guest already exists with username: ' + db.guest.name);
+            	return 
+            } else {
+                // if there is no user with that email
+                // create the user
+                console.log('cant find guest, must create')
+                // save the user
+                db.guest.create({
+                    'name': request.query.guest,
+                    'eventId': allofthem[1].id,
+                    'mainuserId': request.user.id,
+                    'fbeventId': request.query.fbeventid
+                }).then(function(guest) {
+                	console.log("The data is STORED")
+					response.redirect('/dashboard/' + request.query.fbeventid);
+                });
+            }
     	})
 	})
 
