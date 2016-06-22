@@ -6,9 +6,9 @@ var db = {
 // Set up sql
 var Sequelize = require( 'sequelize' )
 db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
-	host: '192.168.99.100',
-	port: '32768',
-	// host: 'localhost',
+	// host: '192.168.99.100',
+	// port: '32768',
+	host: 'localhost',
 	dialect: 'postgres'
 });
 
@@ -43,10 +43,13 @@ db.event = db.conn.define( 'event', {
 
 db.guest = db.conn.define( 'guest', {
 	name: Sequelize.STRING,
-	firstname: Sequelize.STRING,
-	lastname: Sequelize.STRING,
+	guestcount: Sequelize.STRING,
+	guestclass: Sequelize.STRING,
 	photo: Sequelize.STRING,
-	fbeventId: Sequelize.STRING
+	phonenumber: Sequelize.STRING,
+	email: Sequelize.STRING,
+	fbeventId: Sequelize.STRING,
+	clicked: Sequelize.BOOLEAN
 
 })
 
@@ -62,7 +65,9 @@ db.guest.belongsTo(db.mainuser);
 
 // Synchronise with database
 db.conn.sync( {'force': true} ).then( 
-	() => { console.log ( 'Sync succeeded' ) },
+	() => { 
+		console.log ( 'Sync succeeded' )
+	},
 	( err ) => { console.log('sync failed: ' + err) } 
 	)
 
