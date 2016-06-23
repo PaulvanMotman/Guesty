@@ -64,7 +64,7 @@ db.mainuser.hasMany(db.guest);
 db.guest.belongsTo(db.mainuser);
 
 // Synchronise with database
-db.conn.sync( {'force': true} ).then( 
+db.conn.sync( {'force': false} ).then( 
 	() => { 
 		console.log ( 'Sync succeeded' )
 	},

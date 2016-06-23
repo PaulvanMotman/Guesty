@@ -29,7 +29,6 @@ block content
 				#signup-wall
 					h1.text-center.login-title This box displays the events where #{user.firstname} is admin.
 						a(href='/createevent', class='text-center new-account') Display Events
-						div.signup-wall
-							each event in events 
-								#event-titel
+							each event in events
+								div.signup-wall
 									a(href='/dashboard/' + event.fbeventid) #{event.name} </br>

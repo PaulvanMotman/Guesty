@@ -1,21 +1,39 @@
 extends layout
 
 block content
-	h1 Check the attendancy list of your fb-event here:
-	each person in event.attending
-		div
-			input(class='checkbox', type='checkbox')
-			label(class='speciallabel')= person.name
-			div.guestinfo(style= "display: none")
-				form
-					input(type='text', placeholder='Guest count', class='guestcount', required)
-					input(type='text', placeholder='Guest Class', class='guestclass')
-					input(type='text', placeholder='Phone number', class='phonenumber')
-					input(type='text', placeholder='Email', class='email')
-					button(class='updateguest', type='submit') Update Guest
-
-	p#fbeventid #{fbeventid}
-
-
-
-
+	body
+		#wrapper
+			#sidebar-wrapper
+				ul.sidebar-nav
+					li.sidebar-brand
+						a(href='#')
+						| #{event.name}
+					li
+						a(href='#guestlist') Guestlist
+					li
+						a(href='#') Sub-Users
+					li
+						a(href='#') Statistics
+					li
+						a(href='#') Data
+					li
+						a(href='#') Log-out
+			#page-content-wrapper
+				.container
+					.row
+					h1 Manage your event here
+						.col-lg-12
+							#content-sw
+								h1 Check the attendancy list of your fb-event here:
+								each person in event.attending
+									div
+										input(class='checkbox', type='checkbox')
+										label(class='speciallabel')= person.name
+										div.guestinfo(style= "display: none")
+											form
+												input(type='text', placeholder='Guest count', class='guestcount', required)
+												input(type='text', placeholder='Guest Class', class='guestclass')
+												input(type='text', placeholder='Phone number', class='phonenumber')
+												input(type='text', placeholder='Email', class='email')
+												button(class='updateguest', type='submit') Update Guest
+								p#fbeventid #{fbeventid}

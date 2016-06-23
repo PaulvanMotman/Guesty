@@ -15,10 +15,12 @@ var isAuthenticated = function (req, res, next) {
 
 module.exports = function(passport){
 
-	/* GET login page. */
+	/* GET login/home page. */
 	router.get('/', function(req, res) {
     	// Display the Login page with any flash message, if any
-    	res.render('index', { message: req.flash('message') });
+    	res.render('index', { 
+    		title: "Guesty",
+    		message: req.flash('message') });
     });
 
 	/* Handle Login POST */
@@ -30,7 +32,10 @@ module.exports = function(passport){
 
 	/* GET Registration Page */
 	router.get('/signup', function(req, res){
-		res.render('register',{message: req.flash('message')});
+		res.render('register',{
+			title: "Register",
+			message: req.flash('message')
+		});
 	});
 
 	/* Handle Registration POST */
@@ -40,7 +45,7 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
-	// LOGIN FACEBOOK
+	// LOGIN with FACEBOOK
 	router.get('/login/facebook',
 		passport.authenticate('facebook', {
 			scope : ['public_profile', 'user_events', 'email']
@@ -61,7 +66,10 @@ module.exports = function(passport){
 				mainuserId: req.user.dataValues.id
 			}
 		}).then(function (event) {
-			res.render('home', { user: req.user, events: event })
+			res.render('home', { 
+				title: "Select Event",
+				user: req.user, 
+				events: event })
 		})
 	});
 
@@ -144,7 +152,12 @@ module.exports = function(passport){
 			response.redirect('/home');
 		});
 	});
-
+	router.get('/dashy', isAuthenticated, function(request, response) {
+		
+			response.render('dashy', { 
+				title: "Dashboard"
+			});
+	});
 
 	/// Dashboard Event
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
@@ -153,7 +166,11 @@ module.exports = function(passport){
 				'fbeventid' :  request.params.fbeventid 
 			}
 		}).then(function(event) {
-			response.render('dashboard', { event: event, fbeventid: request.params.fbeventid});
+			response.render('dashboard', { 
+				title: "Dashboard",
+				event: event, 
+				fbeventid: request.params.fbeventid
+			});
 		})
 	});
 
