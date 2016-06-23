@@ -19,7 +19,7 @@ passport.use(new Strategy({
     db.mainuser.find({ where: {'fbid' :  profile.id }}).then(function(user) {
       // already exists
       if (user) {
-        console.log('User already exists with username: '+ user.firstname);
+        console.log('User already exists with this username ');
         return;
       } else {
         // if there is no user with that facebook id
@@ -34,7 +34,7 @@ passport.use(new Strategy({
           'photo': profile.photos[0].value,
           'email': profile.emails[0].value
         }).then(function(user) {
-          console.log('User Registration successful for : ' + user.firstname);
+          console.log('User Registration successful');
           return;    
         });
        }
