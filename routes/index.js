@@ -61,7 +61,6 @@ module.exports = function(passport){
 				mainuserId: req.user.dataValues.id
 			}
 		}).then(function (event) {
-			console.log("THIS ARE MY TWO EVENTS!!!!!!!!!: " + event)
 			res.render('home', { user: req.user, events: event })
 		})
 	});
@@ -152,8 +151,6 @@ module.exports = function(passport){
 				'fbeventid' :  request.params.fbeventid 
 			}
 		}).then(function(event) {
-			console.log("GUESTLIST HERE ---> " + event.attending)
-			console.log(event.guest)
 			response.render('dashboard', { event: event, fbeventid: request.params.fbeventid});
 		})
 	});
@@ -175,7 +172,7 @@ module.exports = function(passport){
 			]).then(function(allofthem){
             // already exists
             if (allofthem[0]) {
-            	console.log('Guest already exists with username: ' + db.guest.name);
+            	console.log('Guest already exists with username:');
             	return 
             } else {
                 // if there is no user with that email
@@ -197,14 +194,29 @@ module.exports = function(passport){
 	})
 
 	router.get('/api', isAuthenticated, function(request, response) {
-		console.log('fbid is ' + request.query.fbeventid)
 		db.guest.findAll({ 
 			where: {
 				'fbeventId' :  request.query.fbeventid 
 			}
 		}).then(function(guestlist) {
-			console.log(guestlist)
 			response.send(guestlist)
+		})
+	})
+
+	router.get('/saveguestinfo', isAuthenticated, function(request, response) {
+		db.guest.findOne({ 
+			where: {
+				'name' :  request.query.name 
+			}
+		}).then(function(guest) {
+			console.log("THIS IS THE GUEST WE WANT TO UODATE: " + guest.name)
+			console.log("THIS IS THE GUESTCOUNT WE WANT TO UODATE: " + request.query.guestcount)
+			guest.updateAttributes({
+            	'guestcount': request.query.guestcount,
+            	'guestclass': request.query.guestclass,
+            	'phonenumber': request.query.phonenumber,
+            	'email': request.query.email
+            })
 		})
 	})
 
