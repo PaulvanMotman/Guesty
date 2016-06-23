@@ -1,6 +1,10 @@
 $( document ).ready(function() {
 	$('.checkbox').change(function() {
-		var guest = {guest: $(this).parent().text(), fbeventid: $("#fbeventid").text(), ajax: true}
+		var guest = { 
+			guest: $(this).parent().text(), 
+			fbeventid: $("#fbeventid").text(), 
+			ajax: true
+		}
 		$.get( '/save', guest, function(data) {
 			console.log("Saved the following guest in database: " + data)
 		})
@@ -15,5 +19,13 @@ $( document ).ready(function() {
 	});
 });
 
-
-
+// show onClick the update login form on home
+$( document ).ready(function() {
+	$('#update-login-account').click(function( ) {
+		$('#update-login-info').show(function () {
+			$('#hide-account').click(function(){
+				$('#update-login-info').hide()
+			})
+		})
+	})	
+});

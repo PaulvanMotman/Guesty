@@ -93,3 +93,13 @@ h1.error-message{
 ul.user-details{
     list-style: none;
 }
+
+/*update account info*/
+#update-login-info{
+    display: none;
+}
+#event-title {
+    margin-top: 5px;
+    padding: 1em 0 1em 0;
+}
+

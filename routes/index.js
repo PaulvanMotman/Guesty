@@ -62,9 +62,14 @@ module.exports = function(passport){
 			}
 			}).then(function (event) {
 				console.log("THIS ARE MY TWO EVENTS!!!!!!!!!: " + event)
-				res.render('home', { user: req.user, events: event })
+				res.render('home', { 
+					user: req.user, 
+					events: event 
+				})
 			})
 	});
+
+// 
 
 	/* Handle Logout */
 	router.get('/signout', function(req, res) {
