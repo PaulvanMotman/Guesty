@@ -175,7 +175,7 @@ module.exports = function(passport){
 	});
 
 	/// Save guest in to guest
-	router.get('/save', isAuthenticated, function(request, response) {
+	router.get('/saveguest', isAuthenticated, function(request, response) {
 		Promise.all([
 			db.guest.find({ 
 				where: {
@@ -222,6 +222,7 @@ module.exports = function(passport){
 		})
 	})
 
+	// Add aditional info to guest on guestlist
 	router.get('/saveguestinfo', isAuthenticated, function(request, response) {
 		db.guest.findOne({ 
 			where: {
@@ -237,6 +238,16 @@ module.exports = function(passport){
             	'email': request.query.email
             })
 		})
+	})
+
+	// delete guest from guestlist
+	router.get('/deleteguest', isAuthenticated, function (request, response){
+		db.guest.destroy({
+			where: {
+				'name': request.query.guest
+			}
+		})
+		console.log("Guest is no longer stored in db")
 	})
 
 
