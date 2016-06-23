@@ -12,21 +12,20 @@ $( document ).ready(function() {
 	})
 	$('.checkbox').change(function() {
 		var guest = {guest: $(this).next().text(), fbeventid: $("#fbeventid").text(), clicked: true, ajax: true}
-		$.get( '/save', guest, function(data) {
-			console.log("Saved the guest in database ")
-		})
-		if($(this).is(":checked"))   {
-			console.log('check is true ')
+		if ($(this).is(":checked"))   {
+			$.get( '/saveguest', guest, function(data) {
+			})
 			$(this).nextAll(".guestinfo").show();
 			$(".updateguest").click(function(event) {
 				event.preventDefault()
 				var guestinfo = {name: $(this).parent().parent().prevAll('.speciallabel').text(), guestcount: $(this).prevAll(".guestcount").val(), guestclass: $(this).prevAll(".guestclass").val(), phonenumber: $(this).prevAll(".phonenumber").val(), email: $(this).prevAll(".email").val(), ajax: true}
 				$.get( '/saveguestinfo', guestinfo, function(data) {
-					console.log("Saved the guestinfo in database ")
 				})
 				$(".guestinfo").hide();
 			})
 		} else{
+ 			$.get('/deleteguest', guest, function (data){
+			})
 			$(this).nextAll(".guestinfo").hide();
 		}
 	});
