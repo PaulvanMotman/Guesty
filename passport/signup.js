@@ -17,7 +17,9 @@ module.exports = function(passport) {
         			}),
         			db.event.findOne({
         				where: {
-        					owner: request.user.id
+      // ###################### !!!!!!!!!!!!!!! chenge these to get the event id and fbeventid so when subuser logs in 
+      // he gets redirected to the dinamic event page that has the fbeventid in its URL
+        					'fbeventid' :  request.params.fbeventid
         				}
         			})
         			]).then(function( newsub ) {
@@ -29,8 +31,11 @@ module.exports = function(passport) {
         					console.log('cant find subuser, must create')
 
         					db.subuser.create( {
-        						'email': req.param('email'),
+        						'email': req.body.emailsubuser,
+        			// ORIGINAL
+        			// 'email': req.param('email'),
         						'password': createHash(password),
+        						'fbeventidsubuser': request.params.fbeventid 
         					} ).then(function(newsub) {
         						console.log('User Registration successful: ' + newsub.email);    
         						return done(null, newsub);

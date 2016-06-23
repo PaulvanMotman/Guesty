@@ -43,7 +43,8 @@ block content
 							h1.text-center.login-title Add SubUsers
 								div.signup-wall
 									form(class='form-signin', action='/signup', method='POST')
-										input(type='text', placeholder='email', name='email', class='form-control', required)
+										input(type='text', placeholder='email', name='emailsubuser', class='form-control', required)
+										input(type='text', name='fbeventidsubuser', value="#{fbeventid}", hidden)
 										input(type='text', placeholder='password', name='password', class='form-control nomargin', required)
 										button(class='btn btn-lg btn-primary btn-block', type='submit') Add SubUser
 										span.clearfix

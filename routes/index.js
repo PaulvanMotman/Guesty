@@ -155,28 +155,31 @@ module.exports = function(passport){
 
 	/// Dashboard Event
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
+	console.log("######### DASHBOARD JONGUH #########")
+	// console.log(request.user)
+	console.log("fbeventid : " + request.params.fbeventid)
 		db.event.find({ 
 			where: {
-				'fbeventid' :  request.params.fbeventid 
+				'fbeventid' :  request.params.fbeventid
 			}
 		}).then(function(event) {
 			response.render('dashboard', { 
 				title: "Dashboard",
-				event: event, 
+				event: event,
 				fbeventid: request.params.fbeventid
 			});
 		})
 	});
 
 
-	router.post('/signup', passport.authenticate('signup', {
-		successRedirect: '/home',
+	router.post('/signup',isAuthenticated, passport.authenticate('signup', {
+		successRedirect: '/home', // + request.query.fbeventid,
 		failureRedirect: '/',
 		failureFlash : true  
 	}));
 
 
-	/// Save guest in to guest
+	/// Save guest in to db.guest
 	router.get('/saveguest', isAuthenticated, function(request, response) {
 		Promise.all([
 			db.guest.find({ 
@@ -207,7 +210,7 @@ module.exports = function(passport){
                 	'fbeventId': request.query.fbeventid,
                 	'clicked': request.query.clicked
                 }).then(function(guest) {
-                	console.log("The data is STORED")
+                	console.log("The GUEST is STORED")
                 	response.redirect('/dashboard/' + request.query.fbeventid);
                 });
             }

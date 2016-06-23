@@ -55,7 +55,8 @@ db.guest = db.conn.define( 'guest', {
 
 db.subuser = db.conn.define( 'subuser', {
 	email: Sequelize.STRING,
-	password: Sequelize.STRING
+	password: Sequelize.STRING,
+	fbeventidsubuser: Sequelize.STRING
 })
 
 /// Declaring the relationships between tables
@@ -74,7 +75,7 @@ db.event.hasMany(db.subuser)
 db.subuser.belongsTo(db.event)
 
 // Synchronise with database
-db.conn.sync( {'force': true} ).then( 
+db.conn.sync( {'force': false} ).then( 
 	() => { 
 		console.log ( 'Sync succeeded' )
 	},
