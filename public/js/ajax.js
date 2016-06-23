@@ -1,3 +1,12 @@
+//AJAX home page
+$(document).ready(function(){
+	$(".text-center.new-account").click(function(){
+		$.get('/createevent', function(result){
+		});
+	});
+});
+
+// AJAX dashboard
 $( document ).ready(function() {
 	var fbeventid = {fbeventid: $("#fbeventid").text()}
 	$.get('/api', fbeventid, function(result){
