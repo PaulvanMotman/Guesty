@@ -9,9 +9,17 @@ module.exports = function(passport){
     });
 
     passport.deserializeUser(function(id, done) {
-    	db.mainuser.find({where: {id: id}}).then(
-    		function(user){ done(null, user) },
-    		function(err){ done(err, null) }
+    	db.mainuser.find( { 
+            where: { 
+                id: id
+            }
+        }).then(
+    		function(user) { 
+                done(null, user) 
+            },
+    		function(err) { 
+                done(err, null) 
+            }
     	);
     });
 

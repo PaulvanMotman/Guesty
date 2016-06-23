@@ -16,8 +16,8 @@ var isAuthenticated = function (req, res, next) {
 module.exports = function(passport){
 
 	/* GET login/home page. */
-	router.get('/', function(req, res) {
     	// Display the Login page with any flash message, if any
+	router.get('/', function(req, res) {
     	res.render('index', { 
     		title: "Guesty",
     		message: req.flash('message') });
@@ -39,11 +39,11 @@ module.exports = function(passport){
 	});
 
 	/* Handle Registration POST */
-	router.post('/signup', passport.authenticate('signup', {
-		successRedirect: '/home',
-		failureRedirect: '/signup',
-		failureFlash : true  
-	}));
+	// router.post('/signup', passport.authenticate('signup', {
+	// 	successRedirect: '/home',
+	// 	failureRedirect: '/signup',
+	// 	failureFlash : true  
+	// }));
 
 	// LOGIN with FACEBOOK
 	router.get('/login/facebook',
@@ -152,12 +152,6 @@ module.exports = function(passport){
 			response.redirect('/home');
 		});
 	});
-	router.get('/dashy', isAuthenticated, function(request, response) {
-		
-			response.render('dashy', { 
-				title: "Dashboard"
-			});
-	});
 
 	/// Dashboard Event
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
@@ -173,6 +167,14 @@ module.exports = function(passport){
 			});
 		})
 	});
+
+
+	router.post('/signup', passport.authenticate('signup', {
+		successRedirect: '/home',
+		failureRedirect: '/',
+		failureFlash : true  
+	}));
+
 
 	/// Save guest in to guest
 	router.get('/saveguest', isAuthenticated, function(request, response) {
