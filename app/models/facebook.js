@@ -15,34 +15,34 @@ passport.use(new Strategy({
 
 
 
-  findOrCreateUser = function(){
-    db.mainuser.find({ where: {'fbid' :  profile.id }}).then(function(user) {
-      // already exists
-      if (user) {
-        console.log('User already exists with this username ');
-        return;
-      } else {
-        // if there is no user with that facebook id
-        // create the user
-        console.log('cant find user, now I create a new user')
+  // findOrCreateUser = function(){
+  //   db.mainuser.find({ where: {'fbid' :  profile.id }}).then(function(user) {
+  //     // already exists
+  //     if (user) {
+  //       console.log('User already exists with this username ');
+  //       return;
+  //     } else {
+  //       // if there is no user with that facebook id
+  //       // create the user
+  //       console.log('cant find user, now I create a new user')
 
-        // save the user
-        db.mainuser.create({
-          'fbid': profile.id,
-          'firstname': profile.name.givenName,
-          'lastname': profile.name.familyName,
-          'photo': profile.photos[0].value,
-          'email': profile.emails[0].value
-        }).then(function(user) {
-          console.log('User Registration successful');
-          return;    
-        });
-       }
-    });
-  };
+  //       // save the user
+  //       db.mainuser.create({
+  //         'fbid': profile.id,
+  //         'firstname': profile.name.givenName,
+  //         'lastname': profile.name.familyName,
+  //         'photo': profile.photos[0].value,
+  //         'email': profile.emails[0].value
+  //       }).then(function(user) {
+  //         console.log('User Registration successful');
+  //         return;    
+  //       });
+  //      }
+  //   });
+  // };
 
-  process.nextTick(findOrCreateUser);
-
+  // process.nextTick(findOrCreateUser);
+  console.log(profile)
   return cb(null, profile);
 }));
 
