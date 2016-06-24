@@ -36,15 +36,16 @@ var facebook = require('./app/models/facebook')
 app.use(passport.initialize());
 app.use(passport.session());
 
+var initPassport = require('./passport/init');
+initPassport(passport);
+
  // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
 var flash = require('connect-flash');
 app.use(flash());
 
-// Initialize Passport
-var initPassport = require('./passport/init');
-initPassport(passport);
 
+// Initialize Router
 var routes = require('./routes/index')(passport);
 app.use('/', routes);
 

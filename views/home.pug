@@ -3,13 +3,32 @@ extends layout
 block content
 	div.container
 		div.row
-			div.col-sm-6.col-md-4.col-md-offset-4
+			div.col-sm-6.col-md-6.col-md-offset-0
 				#user
-					h1.text-center.login-title Welcome #{user.firstname}. Check your details below:
+					h1.text-center.login-title Account Info for #{user.firstname}
 						div.signup-wall
-							ul.user-details
-								li Username ---> #{user.username}
-								li Email    ---> #{user.email}
-								li First Name ---> #{user.firstname} 
-								li Last Name ---> #{user.lastname}
-						a(href='/signout', class='text-center new-account') Sign Out
+								ul.user-details.text-left
+									li Name : #{user.firstname} #{user.lastname}
+									li Email : #{user.email}
+								a(href='/signout', class='text-center new-account') Sign Out
+								p#update-login-account( class='text-center new-account') Finish Account Registration
+						#update-login-info
+								div.signup-wall
+									#hide-account
+										h1.text-center.login-title Update Info for #{user.firstname} (click-hide)
+									form(class='form-signin', action='/updateaccount', method='POST')
+										input(type='text', placeholder='email', name='email', class='form-control', required)
+										input(type='text', placeholder='organisation', name='organisation', class='form-control', required)
+										input(type='text', placeholder='username', name='username', class='form-control', required, autofocus)
+										input(type='text', placeholder='password', name='password', class='form-control nomargin', required)
+										input(type='text', placeholder='telephone', name='telephone', class='form-control', required)
+										input(type='text', placeholder='location', name='location', class='form-control', required)
+										button(class='btn btn-lg btn-primary btn-block', type='submit') Register
+										span.clearfix
+			div.col-sm-6.col-md-6.col-md-offset-0
+				#signup-wall
+					h1.text-center.login-title This box displays the events where #{user.firstname} is admin.
+						a(href='/createevent', class='text-center new-account') Display Events
+							each event in events
+								div.signup-wall
+									a(href='/dashboard/' + event.fbeventid) #{event.name} </br>

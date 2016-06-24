@@ -1,9 +1,25 @@
 
 doctype html
 html
+html(lang='en')
   head
-    title= title
-    link(rel='stylesheet', href='css/style.css')
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='You received login credentials from you facebook event administrator')
+    meta(name='author', content='Paul, Gijs en Sven')
+    title=title
+    link(rel='stylesheet', href='/css/style.css')
+    //- Bootstrap
     link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+    //- fontAwesome part of bootstrap icons and fonts
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(href='/css/simple-sidebar.css', rel='stylesheet')
+    //- jQuery
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    //- CUSTOM.JS
+    script(src='/js/ajax.js')
   body
     block content

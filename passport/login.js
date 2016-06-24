@@ -3,15 +3,19 @@ var db = require('../app/models/database');
 var bCrypt = require('bcrypt');
 
 module.exports = function(passport){
-
-	passport.use('login', new LocalStrategy({
+// AUTHENTICATE subuser Login
+	passport.use('login', new LocalStrategy ( {
             passReqToCallback : true
         },
-        function(req, username, password, done) { 
-        	db.mainuser.find({ where: {'username' :  username }}).then(
+        function(req, email, password, done) {
+        	db.mainuser.find( { 
+                where: {
+                    'email' :  email 
+                }
+            }).then(
         		function(user) {
         			if (!user){
-                        console.log('User Not Found with username '+username);
+                        console.log('User Not Found with email ' + email);
                         return done(null, false, req.flash('message', 'User Not found.'));                 
                     }
                     // User exists but wrong password, log the error 
@@ -27,13 +31,9 @@ module.exports = function(passport){
                 function(err) {
                 	return done(err);
                 });
-
         })
     );
-
-
     var isValidPassword = function(user, password){
         return bCrypt.compareSync(password, user.password);
     }
-    
 }

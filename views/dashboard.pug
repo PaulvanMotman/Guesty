@@ -1,0 +1,53 @@
+extends layout
+
+block content
+	body
+		#wrapper
+			#sidebar-wrapper
+				ul.sidebar-nav
+					li.sidebar-brand
+						a(href='#')
+						| #{event.name}
+					li
+						a(href='#guestlist') Guestlist
+					li
+						a(href='#') Sub-Users
+					li
+						a(href='#') Statistics
+					li
+						a(href='#') Data
+					li
+						a(href='#') Log-out
+			#page-content-wrapper
+				.container
+					.row
+					h1 Manage your event here
+						.col-lg-12
+							#content-sw
+								h1 Check the attendancy list of your fb-event here:
+								each person in event.attending
+									div
+										input(class='checkbox', type='checkbox')
+										label(class='speciallabel')= person.name
+										div.guestinfo(style= "display: none")
+											form
+												input(type='text', placeholder='Guest count', class='guestcount', required)
+												input(type='text', placeholder='Guest Class', class='guestclass')
+												input(type='text', placeholder='Phone number', class='phonenumber')
+												input(type='text', placeholder='Email', class='email')
+												button(class='updateguest', type='submit') Update Guest
+								p#fbeventid #{fbeventid}
+				.container
+					.row
+						.col-sm-6.col-md-4.col-md-offset-4
+							h1.text-center.login-title Add SubUsers
+								div.signup-wall
+									form(class='form-signin', action='/signup', method='POST')
+										input(type='text', placeholder='email', name='emailsubuser', class='form-control', required)
+										input(type='text', name='fbeventidsubuser', value="#{fbeventid}", hidden)
+										input(type='text', placeholder='password', name='password', class='form-control nomargin', required)
+										button(class='btn btn-lg btn-primary btn-block', type='submit') Add SubUser
+										span.clearfix
+								#message
+									if message
+										h1.text-center.error-message #{message}
