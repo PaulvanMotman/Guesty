@@ -132,16 +132,24 @@ module.exports = function(passport){
 
 // Dynamic Dashboard per Event
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
-	// console.log("######### DASHBOARD #########")
-	// console.log("fbeventid : " + request.params.fbeventid)
+	console.log("######### DASHBOARD #########")
+	console.log("fbeventid : " + request.params.fbeventid)
+		Promise.all([
 		db.event.find({ 
 			where: {
 				'fbeventid' :  request.params.fbeventid
 			}
-		}).then(function(event) {
+		}),
+		db.guest.findAll({
+			where: {
+				'fbeventId' : request.params.fbeventid
+			}
+		})
+		]).then(function(event) {
 			response.render('dashboard', { 
-				title: "Dashboard",
-				event: event,
+				title: event[0].name,
+				event: event[0],
+				guests: event[1],
 				fbeventid: request.params.fbeventid
 			});
 		})
