@@ -6,9 +6,9 @@ var db = {
 // Set up sql
 var Sequelize = require( 'sequelize' )
 db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
-	// host: '192.168.99.100',
-	// port: '32768',
-	host: 'localhost',
+	host: '192.168.99.100',
+	port: '32768',
+	// host: 'localhost',
 	dialect: 'postgres'
 });
 
@@ -73,7 +73,7 @@ db.guest.belongsTo(db.mainuser);
 db.mainuser.hasMany(db.subuser)
 db.event.hasMany(db.subuser)
 db.subuser.belongsTo(db.event)
-
+db.subuser.belongsTo(db.mainuser)
 // Synchronise with database
 db.conn.sync( {'force': false} ).then( 
 	() => { 

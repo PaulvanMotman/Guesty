@@ -6,7 +6,7 @@ block content
 			div.col-sm-12.col-md-12
 				h3.text-center Guesty
 				h5.text-center If you don't know who is actually on your guestlist
-			div.col-sm-6.col-md-6.col-md-offset-0
+			div.col-sm-6.col-md-6.col-md-offset-3
 					div.account-wall
 						h1.text-center.login-title Organizer Login
 						p.text-center Your Personal Facebook based Guestlist Management Application
@@ -15,16 +15,6 @@ block content
 							a.btn.btn-block.btn-social.btn-facebook(href='/login/facebook')
 								span.fa.fa-facebook
 								|  Login with Facebook
-			div.col-sm-6.col-md-6.col-md-offset-0
-				div.account-wall
-					h1.text-center.login-title Sub-User Login
-					p.text-center You received login credentials from you facebook event administrator
-						// img(class='profile-img', src='https://cdn4.iconfinder.com/data/icons/security-overcolor/512/access_key-512.png')
-						form(class='form-signin', action='/login', method='POST')
-							input(type='text', name='username' class='form-control', placeholder='Username',required, autofocus)
-							input(type='password', name='password' class='form-control', placeholder='Password', required)
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Sign in
-							span.clearfix
 					#message
 					if message
 						h1.text-center.error-message #{message}

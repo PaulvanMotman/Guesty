@@ -4,12 +4,14 @@ var db = require('../app/models/database');
 
 module.exports = function(passport){
     // Serialize sessions
+
     passport.serializeUser(function(user, done) {
     	done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
-    	db.mainuser.find( { 
+// changed from db.mainuser 
+    	db.subuser.find( { 
             where: { 
                 id: id
             }

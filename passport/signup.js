@@ -3,11 +3,15 @@ var db = require('../app/models/database');
 var bCrypt = require('bcrypt');
 
 module.exports = function(passport) {
+	// console.log("$$$$$$$$$$ HELLOOOO signup ^^^^^^")
+	
+	// console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
 	passport.use('signup', new LocalStrategy ( {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
-        function(req, email, password, done) {
-
+        function(request, email, password, done) {
+        	console.log('HELLOOOOOOO')
+        	console.log(request)
         	findOrCreateSubUser = function(){	
         		Promise.all([
         			db.mainuser.findOne({
@@ -23,15 +27,16 @@ module.exports = function(passport) {
         				}
         			})
         			]).then(function( newsub ) {
+        			console.log("%%%% NEW SUB IN THE MAKING")	
         				if (newsub) {
         					console.log('SubUser already exists with email: '+ email);
-        					return done(null, false, req.flash('message','User Already Exists'));
+        					return done(null, false, request.flash('message','User Already Exists'));
         				} else {
 
         					console.log('cant find subuser, must create')
 
         					db.subuser.create( {
-        						'email': req.body.emailsubuser,
+        						'email': request.body.emailsubuser,
         			// ORIGINAL
         			// 'email': req.param('email'),
         						'password': createHash(password),
