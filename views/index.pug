@@ -1,12 +1,39 @@
 extends layout
 
 block content
-	div.container
-		div.row
-			div.col-sm-12.col-md-12
-				h3.text-center Guesty
-				h5.text-center If you don't know who is actually on your guestlist
-			div.col-sm-6.col-md-6.col-md-offset-3
+	nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+		.container
+			.navbar-header.page-scroll
+				button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+					span.sr-only Toggle navigation
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				a.navbar-brand.page-scroll(href='#page-top') Guesty
+			.collapse.navbar-collapse.navbar-ex1-collapse
+				ul.nav.navbar-nav
+					li.hidden
+						a.page-scroll(href='#page-top')
+					li
+						a.page-scroll(href='#login') LOGIN
+					li
+						a.page-scroll(href='#about') ABOUT
+	section#intro.intro-section
+		.container
+			.row
+				.col-lg-12
+					img(src='/images/event.jpeg')
+					h1 Guesty!
+						p
+				a.btn.btn-default.page-scroll(href='#about') Click Me to Scroll Down!
+
+	section#login.about-section
+		.container
+			.row
+				.col-lg-12
+					h3.text-center Guesty
+					h5.text-center If you don't know who is actually on your guestlist
+				.col-lg-12
 					div.account-wall
 						h1.text-center.login-title Organizer Login
 						p.text-center Your Personal Facebook based Guestlist Management Application
@@ -18,3 +45,9 @@ block content
 					#message
 					if message
 						h1.text-center.error-message #{message}
+
+	section#about.services-section
+		.container
+			.row
+				.col-lg-12
+					h1 Services Section
