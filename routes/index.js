@@ -15,32 +15,15 @@ var isAuthenticated = function (req, res, next) {
 
 module.exports = function(passport){
 
-	/* GET login page. */
+// >>>> LOGIN HANDLERS START<<<<<<
+// Display the Login page with any flash message, if any
 	router.get('/', function(req, res) {
-    	// Display the Login page with any flash message, if any
-    	res.render('index', { message: req.flash('message') });
+    	res.render('index', { 
+    		title: "Guesty",
+    		message: req.flash('message') });
     });
 
-	/* Handle Login POST */
-	router.post('/login', passport.authenticate('login', {
-		successRedirect: '/home',
-		failureRedirect: '/',
-		failureFlash : true  
-	}));
-
-	/* GET Registration Page */
-	router.get('/signup', function(req, res){
-		res.render('register',{message: req.flash('message')});
-	});
-
-	/* Handle Registration POST */
-	router.post('/signup', passport.authenticate('signup', {
-		successRedirect: '/home',
-		failureRedirect: '/signup',
-		failureFlash : true  
-	}));
-
-	// LOGIN FACEBOOK
+	// LOGIN with FACEBOOK
 	router.get('/login/facebook',
 		passport.authenticate('facebook', {
 			scope : ['public_profile', 'user_events', 'email']
@@ -54,26 +37,28 @@ module.exports = function(passport){
 			res.redirect('/home');
 		});
 
-	/* GET Home Page */
-	router.get('/home', isAuthenticated, function(req, res){
-		db.event.findAll({ 
-			where: {
-				mainuserId: req.user.dataValues.id
-			}
-		}).then(function (event) {
-			res.render('home', { user: req.user, events: event })
-		})
-	});
-
-// 
-
 	/* Handle Logout */
 	router.get('/signout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
 
-	// FACEBOOK API
+// >>>>>>>>>>>>>>>>>>>>>>>> login process ended
+/* GET Home Page */
+	router.get('/home', isAuthenticated, function(req, res){
+		db.event.findAll({ 
+			where: {
+				mainuserId: req.user.dataValues.id
+			}
+		}).then(function (event) {
+			res.render('home', { 
+				title: "Select Event",
+				user: req.user, 
+				events: event })
+		})
+	});
+
+// FACEBOOK API variables
 	var Facebook = require('facebook-node-sdk');
 
 	var facebook = new Facebook( { 
@@ -81,7 +66,7 @@ module.exports = function(passport){
 		secret: process.env.CLIENT_SECRET 
 	});
 
-	/* GET create event Page */
+/* Store events where user is admin in DB */
 	router.get('/createevent', isAuthenticated, function(req, response){
 		facebook.setAccessToken(req.user.accessToken)
 		console.log("button is working")
@@ -145,20 +130,33 @@ module.exports = function(passport){
 		});
 	});
 
-
-	/// Dashboard Event
+// Dynamic Dashboard per Event
 	router.get('/dashboard/:fbeventid', isAuthenticated, function(request, response) {
+	console.log("######### DASHBOARD #########")
+	console.log("fbeventid : " + request.params.fbeventid)
+		Promise.all([
 		db.event.find({ 
 			where: {
-				'fbeventid' :  request.params.fbeventid 
+				'fbeventid' :  request.params.fbeventid
 			}
-		}).then(function(event) {
-			response.render('dashboard', { event: event, fbeventid: request.params.fbeventid});
+		}),
+		db.guest.findAll({
+			where: {
+				'fbeventId' : request.params.fbeventid
+			}
+		})
+		]).then(function(event) {
+			response.render('dashboard', { 
+				title: event[0].name,
+				event: event[0],
+				guests: event[1],
+				fbeventid: request.params.fbeventid
+			});
 		})
 	});
 
-	/// Save guest in to guest
-	router.get('/save', isAuthenticated, function(request, response) {
+	/// Store guest in db.guest
+	router.get('/saveguest', isAuthenticated, function(request, response) {
 		Promise.all([
 			db.guest.find({ 
 				where: {
@@ -188,13 +186,13 @@ module.exports = function(passport){
                 	'fbeventId': request.query.fbeventid,
                 	'clicked': request.query.clicked
                 }).then(function(guest) {
-                	console.log("The data is STORED")
+                	console.log("The GUEST is STORED")
                 	response.redirect('/dashboard/' + request.query.fbeventid);
                 });
             }
         })
 	})
-
+// API that checks who is on the guestlist/ db.guest
 	router.get('/api', isAuthenticated, function(request, response) {
 		db.guest.findAll({ 
 			where: {
@@ -205,6 +203,7 @@ module.exports = function(passport){
 		})
 	})
 
+// UPDATE already stored guests in db.guest
 	router.get('/saveguestinfo', isAuthenticated, function(request, response) {
 		db.guest.findOne({ 
 			where: {
@@ -222,25 +221,14 @@ module.exports = function(passport){
 		})
 	})
 
-
-	// LOGIN FACEBOOK
-	router.get('/login/facebook',
-		passport.authenticate('facebook', {
-			scope : ['public_profile', 'user_events', 'email']
-		}));
-	// RETURN AFTER LOGIN FB
-	router.get('/login/facebook/return', 
-		passport.authenticate('facebook', {
-			failureRedirect: '/', 
-		}),
-		function(req, res) {
-			res.redirect('/home');
-		});
-
-
+// delete guest from guestlist/ guest.db
+	router.get('/deleteguest', isAuthenticated, function (request, response){
+		db.guest.destroy({
+			where: {
+				'name': request.query.guest
+			}
+		})
+		console.log("Guest is DELETED from db.guest")
+	})
 	return router;
 }
-
-
-
-

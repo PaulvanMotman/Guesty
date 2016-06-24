@@ -1,26 +1,53 @@
 extends layout
 
 block content
-	div.container
-		div.row
-			div.col-sm-6.col-md-4.col-md-offset-4
-				h1.text-center.login-title
+	nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+		.container
+			.navbar-header.page-scroll
+				button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+					span.sr-only Toggle navigation
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				a.navbar-brand.page-scroll(href='#page-top') Guesty
+			.collapse.navbar-collapse.navbar-ex1-collapse
+				ul.nav.navbar-nav
+					li.hidden
+						a.page-scroll(href='#page-top')
+					li
+						a.page-scroll(href='#login') LOGIN
+					li
+						a.page-scroll(href='#about') ABOUT
+	section#intro.intro-section
+		.container
+			.row
+				.col-lg-12
+					img(src='/images/event.jpeg')
+					h1 Guesty!
+						p
+				a.btn.btn-default.page-scroll(href='#about') Click Me to Scroll Down!
+
+	section#login.about-section
+		.container
+			.row
+				.col-lg-12
+					h3.text-center Guesty
+					h5.text-center If you don't know who is actually on your guestlist
+				.col-lg-12
 					div.account-wall
-						div.login-welcome
-							h3 Welcome to Guesty
-							h5 Your Personal Facebook based Guestlist Management Application
-						img(class='profile-img', src='images/facebook_login.png')
-						a.btn.btn-block.btn-social.btn-facebook(href='/login/facebook')
-							span.fa.fa-facebook
-							|  Login with Facebook (recommended)
-					div.account-wall
-						img(class='profile-img', src='https://cdn4.iconfinder.com/data/icons/security-overcolor/512/access_key-512.png')
-						form(class='form-signin', action='/login', method='POST')
-							input(type='text', name='username' class='form-control', placeholder='Username',required, autofocus)
-							input(type='password', name='password' class='form-control', placeholder='Password', required)
-							button(class='btn btn-lg btn-primary btn-block', type='submit') Sign in
-							span.clearfix
-					a(href='/signup', class='text-center new-account') Create an account
+						h1.text-center.login-title Organizer Login
+						p.text-center Your Personal Facebook based Guestlist Management Application
+							div.login-welcome
+							img(class='profile-img', src='images/facebook_login.png')
+							a.btn.btn-block.btn-social.btn-facebook(href='/login/facebook')
+								span.fa.fa-facebook
+								|  Login with Facebook
 					#message
 					if message
 						h1.text-center.error-message #{message}
+
+	section#about.services-section
+		.container
+			.row
+				.col-lg-12
+					h1 Services Section

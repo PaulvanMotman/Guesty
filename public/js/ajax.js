@@ -1,5 +1,16 @@
+//AJAX home page
+$(document).ready(function(){
+	$(".text-center.new-account").click(function(){
+		$.get('/createevent', function(result){
+		});
+	});
+});
+
+// AJAX dashboard
 $( document ).ready(function() {
-	var fbeventid = {fbeventid: $("#fbeventid").text()}
+	var fbeventid = {
+		fbeventid: $("#fbeventid").text()
+	}
 	$.get('/api', fbeventid, function(result){
 		var onpage = $('.speciallabel')
 		for (var i = 0; i < onpage.length; i++) {
@@ -11,34 +22,34 @@ $( document ).ready(function() {
 		}
 	})
 	$('.checkbox').change(function() {
-		var guest = {guest: $(this).next().text(), fbeventid: $("#fbeventid").text(), clicked: true, ajax: true}
-		$.get( '/save', guest, function(data) {
-			console.log("Saved the guest in database ")
-		})
-		if($(this).is(":checked"))   {
-			console.log('check is true ')
+		var guest = {
+			guest: $(this).next().text(), 
+			fbeventid: $("#fbeventid").text(), 
+			clicked: true, 
+			ajax: true
+		}
+		if ($(this).is(":checked"))   {
+			$.get( '/saveguest', guest, function(data) {
+			})
 			$(this).nextAll(".guestinfo").show();
 			$(".updateguest").click(function(event) {
 				event.preventDefault()
-				var guestinfo = {name: $(this).parent().parent().prevAll('.speciallabel').text(), guestcount: $(this).prevAll(".guestcount").val(), guestclass: $(this).prevAll(".guestclass").val(), phonenumber: $(this).prevAll(".phonenumber").val(), email: $(this).prevAll(".email").val(), ajax: true}
+				var guestinfo = {
+					name: $(this).parent().parent().prevAll('.speciallabel').text(), 
+					guestcount: $(this).prevAll(".guestcount").val(), 
+					guestclass: $(this).prevAll(".guestclass").val(), 
+					phonenumber: $(this).prevAll(".phonenumber").val(), 
+					email: $(this).prevAll(".email").val(), 
+					ajax: true
+				}
 				$.get( '/saveguestinfo', guestinfo, function(data) {
-					console.log("Saved the guestinfo in database ")
 				})
 				$(".guestinfo").hide();
 			})
 		} else{
+ 			$.get('/deleteguest', guest, function (data){
+			})
 			$(this).nextAll(".guestinfo").hide();
 		}
 	});
-});
-
-// show onClick the update login form on home
-$( document ).ready(function() {
-	$('#update-login-account').click(function( ) {
-		$('#update-login-info').show(function () {
-			$('#hide-account').click(function(){
-				$('#update-login-info').hide()
-			})
-		})
-	})	
 });
