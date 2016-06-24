@@ -14,13 +14,29 @@ html(lang='en')
     //- fontAwesome part of bootstrap icons and fonts
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-    link(href='/css/simple-sidebar.css', rel='stylesheet')
-    <link href="css/landing.css" rel="stylesheet">
+    //- sidebar CSS on dashboard
+    link(href='/css/navbar-after-login.css', rel='stylesheet')
     //- jQuery
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
     //- CUSTOM.JS
-    script(src='/js/dashboard.js')
     script(src='/js/ajax.js')
+    script(src='/js/dashboard.js')
+    script(src='/js/home.js')
   body#page-top(data-spy='scroll', data-target='.navbar-fixed-top')
+    nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+        .container
+            .navbar-header.page-scroll
+                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand.page-scroll(href='https://www.xnxx.com') Powerd by Guesty
+            .collapse.navbar-collapse.navbar-ex1-collapse
+                ul.nav.navbar-nav.float-right
+                    li
+                        a(href='/home') HOME
+                    li
+                        a(href='/signout') LOGOUT
     block content

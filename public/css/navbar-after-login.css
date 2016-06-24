@@ -1,11 +1,23 @@
-/*!
- * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
+/* THIS CSS FILE CONTAINS THE CSS FOR ALL NAVBARS AND SIDEBARS AFTER LOGIN!!! (so not the navbar on the landingpage)*/
+/* NAVBAR ON DASHBOARD & HOME CSS */
 
-/* Toggle Styles */
+nav.navbar.navbar-default.navbar-fixed-top{
+    background-color: #3b5998;
+}
+nav.navbar.navbar-default.navbar-fixed-top a{
+    color:white;
+}
 
+nav.navbar.navbar-default.navbar-fixed-top a:hover {
+    text-decoration: none;
+    color: #3b5998;
+    background: #fff;
+}
+.float-right {
+    float: right;
+}
+
+/* SIDEBAR ON DACHBOARD CSS */
 #wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
