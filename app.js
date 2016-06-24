@@ -57,6 +57,17 @@ app.use(function(req, res, next) {
 });
 
 
+// ############# FACEBOOK API CALL ####################
+// Using require() in ES5
+
+
+
+// ############# GUESTY API CALL ######################
+
+
+
+
+
 /// This part tells the app to listen to a server
 var server = app.listen(3000, function (){
 	console.log ('Blog Application listening on: ' + server.address().port)

@@ -22,6 +22,7 @@ module.exports = function(passport){
     		title: "Guesty",
     		message: req.flash('message') });
     });
+
 	// LOGIN with FACEBOOK
 	router.get('/login/facebook',
 		passport.authenticate('facebook', {
@@ -35,11 +36,13 @@ module.exports = function(passport){
 		function(req, res) {
 			res.redirect('/home');
 		});
+
 	/* Handle Logout */
 	router.get('/signout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
+
 // >>>>>>>>>>>>>>>>>>>>>>>> login process ended
 /* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
