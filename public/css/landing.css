@@ -1,56 +1,44 @@
-/*!
- * Start Bootstrap - Scrolling Nav HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
 
 body {
     width: 100%;
     height: 100%;
+    background-color: #f7f7f7 ;
 }
 
-html {
-    width: 100%;
-    height: 100%;
-}
-
-@media(min-width:767px) {
-    .navbar {
-        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        transition: background .5s ease-in-out,padding .5s ease-in-out;
-    }
-
-    .top-nav-collapse {
-        padding: 0;
-    }
-}
-
+/*NAV BAR */   
 nav.navbar.navbar-default.navbar-fixed-top{
     background-color: #3b5998;
 }
 nav.navbar.navbar-default.navbar-fixed-top a{
     color:white;
 }
+
+nav.navbar.navbar-default.navbar-fixed-top a:hover {
+    text-decoration: none;
+    color: #3b5998;
+    background: #fff;
+}
 .float-right {
     float: right;
 }
 
-img{
-    width: 100%;
+a.btn.btn-block.btn-social.btn-facebook{
+    color:black;
+    font-size: 3em;
 }
 
-.intro-section {
-    height: 100%;
-    padding-top: 150px;
-    text-align: center;
-    background: #fff;
+u:hover{
+    color: #D3D3D3;
 }
 
-.about-section {
-    height: 100%;
-    padding-top: 150px;
-    text-align: center;
+.carousel-caption{
+    margin: 0 auto;
+    padding-top: 50px;
+}
+
+div.account-wall.textcenter{
+    padding: 0 40%;
+
 }
 
 .services-section {
@@ -59,9 +47,3 @@ img{
     text-align: center;
 }
 
-.contact-section {
-    height: 100%;
-    padding-top: 150px;
-    text-align: center;
-    background: #eee;
-}

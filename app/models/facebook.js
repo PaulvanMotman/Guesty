@@ -42,7 +42,7 @@ passport.use(new Strategy({
   };
 
   process.nextTick(findOrCreateUser);
-
+  console.log(profile)
   return cb(null, profile);
 }));
 

@@ -1,6 +1,24 @@
-extends layout
-
-block content
+doctype html
+html
+html(lang='en')
+head
+	meta(charset='utf-8')
+	meta(http-equiv='X-UA-Compatible', content='IE=edge')
+	meta(name='viewport', content='width=device-width, initial-scale=1')
+	meta(name='description', content='You received login credentials from you facebook event administrator')
+	meta(name='author', content='Paul, Gijs en Sven')
+	title=title
+	//- Bootstrap
+	link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+	//- fontAwesome part of bootstrap icons and fonts
+	link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
+	link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+	//- sidebar CSS on dashboard
+	link(rel='stylesheet', href='/css/landing.css')
+	//- jQuery
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js')
+	script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+body#page-top(data-spy='scroll', data-target='.navbar-fixed-top')
 	nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
 		.container
 			.navbar-header.page-scroll
@@ -9,45 +27,27 @@ block content
 					span.icon-bar
 					span.icon-bar
 					span.icon-bar
-				a.navbar-brand.page-scroll(href='#page-top') Guesty
+				a.navbar-brand.page-scroll(href='#page-top') GUESTY
 			.collapse.navbar-collapse.navbar-ex1-collapse
-				ul.nav.navbar-nav
+				ul.nav.navbar-nav.float-right
 					li.hidden
 						a.page-scroll(href='#page-top')
-					li
-						a.page-scroll(href='#login') LOGIN
-					li
-						a.page-scroll(href='#about') ABOUT
-	section#intro.intro-section
-		.container
-			.row
-				.col-lg-12
-					img(src='/images/event.jpeg')
-					h1 Guesty!
-						p
-				a.btn.btn-default.page-scroll(href='#about') Click Me to Scroll Down!
-
-	section#login.about-section
-		.container
-			.row
-				.col-lg-12
-					h3.text-center Guesty
-					h5.text-center If you don't know who is actually on your guestlist
-				.col-lg-12
-					div.account-wall
-						h1.text-center.login-title Organizer Login
-						p.text-center Your Personal Facebook based Guestlist Management Application
-							div.login-welcome
-							img(class='profile-img', src='images/facebook_login.png')
-							a.btn.btn-block.btn-social.btn-facebook(href='/login/facebook')
-								span.fa.fa-facebook
-								|  Login with Facebook
+	
+	#mycarousel.carousel.slide(data-ride='carousel')
+		.carousel-inner
+			.item.active
+				img(class='img-responsive' src='images/event.jpg', alt='')
+				.carousel-caption
+					h1 GUESTY
+					h3 Your personal Facebook based Guestlist Management Application
 					#message
 					if message
 						h1.text-center.error-message #{message}
-
-	section#about.services-section
+	.facebook
 		.container
 			.row
-				.col-lg-12
-					h1 Services Section
+				.col-sm-12.text-center
+					a.btn.btn-block.btn-social.btn-facebook(href='/login/facebook')
+						span.fa.fa-facebook
+						u
+							|  Login
