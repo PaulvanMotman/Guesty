@@ -1,11 +1,6 @@
-// Container object
-var db = {
-	mod: {}
-}
-
 // Set up sql
 var Sequelize = require( 'sequelize' )
-
+// for heroku: Is DB URL available?
 if (process.env.DATABASE_URL) {
 	pg.defaults.ssl = true;
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
@@ -18,7 +13,7 @@ if (process.env.DATABASE_URL) {
 	      console.log(JSON.stringify(row));
 	    });
 	});
-} else {
+} else { // local DB
 	db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
 		host: '192.168.99.100',
 		port: '32768',
@@ -27,7 +22,10 @@ if (process.env.DATABASE_URL) {
 });
 }
 
-
+// Container object
+var db = {
+	mod: {}
+}
 //// Models
 // Users
 db.mainuser = db.conn.define( 'mainuser', {
