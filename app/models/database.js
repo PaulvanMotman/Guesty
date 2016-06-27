@@ -4,7 +4,7 @@ var Sequelize = require( 'sequelize' )
 // for heroku: Is DB URL available?
 if (process.env.DATABASE_URL) {
     // the application is executed on Heroku
-    sequelize = new Sequelize(process.env.DATABASE_URL, {
+    db.conn = new Sequelize(process.env.DATABASE_URL, {
       dialect:  'postgres',
       protocol: 'postgres',
       logging:  true //false
