@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 var passport = require('passport');
 var Sequelize = require('sequelize');
 var session = require('express-session');
+var port = process.env.PORT || 8080;
 
 /// Requiring modules
 var db = require('./app/models/database')
@@ -69,6 +70,6 @@ app.use(function(req, res, next) {
 
 
 /// This part tells the app to listen to a server
-var server = app.listen(3000, function (){
+var server = app.listen(port, function (){
 	console.log ('Blog Application listening on: ' + server.address().port)
 });

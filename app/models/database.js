@@ -2,7 +2,9 @@
 var Sequelize = require( 'sequelize' )
 // for heroku: Is DB URL available?
 if (process.env.DATABASE_URL) {
+
 	pg.defaults.ssl = true;
+	
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
