@@ -7,9 +7,11 @@ const bcrypt = require('bcrypt')
 var passport = require('passport');
 var Sequelize = require('sequelize');
 var session = require('express-session');
+
+// port for heroku to connect
 var port = process.env.PORT || 8080;
 
-/// Requiring modules
+// Requiring modules
 var db = require('./app/models/database')
 
 // Use application-level middleware for common functionality, including
@@ -17,19 +19,34 @@ var db = require('./app/models/database')
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 
-/// Setting the jade views
+/// Setting the view engine pug
 app.set('views', './views');
 app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('./public/'));
 
-/// Declaring the session stuff??
+// Reddis to store the session
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
+// initialize authentication and sessions
+if (process.env.REDIS_URL) {
 app.use(session({
-	secret: 'oh wow very secret much security',
-	resave: true,
-	saveUninitialized: false
+	secret: 'secret no, more the just a secret', 
+	resave: false, 
+	saveUninitialized: false,
+	// using redis for session storage here. if no redis server available, change 'store' to use another sessionstore.
+	store: new RedisStore({
+		url: process.env.REDIS_URL
+	}) 
 }));
+} else { app.use(session({
+		secret: 'oh wow very secret much security',
+		resave: true,
+		saveUninitialized: false
+	}));
+}
 
 // Declaring the passport stuff
 var passport = require('passport');
