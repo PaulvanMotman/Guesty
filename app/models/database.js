@@ -1,6 +1,11 @@
 // Set up sql
 
 var Sequelize = require( 'sequelize' )
+
+// Container object
+var db = {
+	mod: {}
+}
 // for heroku: Is DB URL available?
 if (process.env.DATABASE_URL) {
     // the application is executed on Heroku
@@ -18,10 +23,7 @@ if (process.env.DATABASE_URL) {
 });
 }
 
-// Container object
-var db = {
-	mod: {}
-}
+
 //// Models
 // Users
 db.mainuser = db.conn.define( 'mainuser', {
