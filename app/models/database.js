@@ -1,7 +1,5 @@
 // Set up sql
-
 var Sequelize = require( 'sequelize' )
-
 // Container object
 var db = {
 	mod: {}
@@ -20,7 +18,7 @@ if (process.env.DATABASE_URL) {
 		port: '32768',
 		// host: 'localhost',
 		dialect: 'postgres'
-});
+	});
 }
 
 
