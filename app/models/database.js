@@ -16,7 +16,7 @@ if (process.env.DATABASE_URL) {
     })
   } else { // local DB
 	db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
-		host: '192.168.99.100',
+		host: process.env.DOCKER_HOST,
 		port: '32768',
 		// host: 'localhost',
 		dialect: 'postgres'
