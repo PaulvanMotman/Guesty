@@ -85,7 +85,7 @@ db.event.hasMany(db.subuser)
 db.subuser.belongsTo(db.event)
 db.subuser.belongsTo(db.mainuser)
 // Synchronise with database
-db.conn.sync( {'force': true} ).then( 
+db.conn.sync( {'force': false} ).then( 
 	() => { 
 		console.log ( 'Sync succeeded' )
 	},
