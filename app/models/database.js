@@ -1,17 +1,27 @@
+// Set up sql
+
+var Sequelize = require( 'sequelize' )
+
 // Container object
 var db = {
 	mod: {}
 }
-
-// Set up sql
-var Sequelize = require( 'sequelize' )
-db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
-	// host: '192.168.99.100',
-	// port: '32768',
-	host: 'localhost',
-	dialect: 'postgres'
+// for heroku: Is DB URL available?
+if (process.env.DATABASE_URL) {
+    // the application is executed on Heroku
+    db.conn = new Sequelize(process.env.DATABASE_URL, {
+      dialect:  'postgres',
+      protocol: 'postgres',
+      logging:  true //false
+    })
+  } else { // local DB
+	db.conn = new Sequelize('guesty', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
+		host: process.env.DOCKER_HOST,
+		port: '32768',
+		// host: 'localhost',
+		dialect: 'postgres'
 });
-
+}
 
 
 //// Models

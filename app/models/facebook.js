@@ -6,7 +6,7 @@ var db = require('./database');
 passport.use(new Strategy({
    clientID: process.env.CLIENT_ID,
    clientSecret: process.env.CLIENT_SECRET,
-   callbackURL: 'http://localhost:3000/login/facebook/return',
+   callbackURL: '/login/facebook/return',
    profileFields: ['id', 'name', 'displayName', 'events', 'emails', 'picture.width(800).height(800)']
  },
  function(accessToken, refreshToken, profile, cb) {
